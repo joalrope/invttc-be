@@ -1,0 +1,4 @@
+
+
+db user: mern_user
+db pass: IaD64UtARWyWWbWP
