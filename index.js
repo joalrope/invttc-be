@@ -13,7 +13,7 @@ const app = express();
 dbConnection();
 
 
-//CORS
+//CORS ==> comunicacion cruzada entre servidores
 app.use(cors());
 
 

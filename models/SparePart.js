@@ -1,4 +1,5 @@
 const {Schema, model} = require('mongoose');
+const { schema } = require('./User');
 
 
 const SparePartSchema = Schema({
@@ -19,7 +20,21 @@ const SparePartSchema = Schema({
         type: String
     },
     location: {
-        type: String
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    qty: {
+        type: Number,
+        required: true
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 },
 {
@@ -33,4 +48,4 @@ SparePartSchema.method('toJSON', function() {
 });
 
 
-module.exports = model ('Parts', SparePartSchema);
+module.exports = model ('SparePart', SparePartSchema);
