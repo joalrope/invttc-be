@@ -17,8 +17,8 @@ const UserSchema = Schema({
     },
     role: {
         type: String,
-        enum: ['visitor', 'auth-visitor', 'storer', 'storer-chief', 'seller', 'admin', 'store-manager', 'owner', 'app-dev' ],
-        default: 'visitor',
+        enum: ['basic', 'freelance', 'storer', 'storer-chief', 'seller', 'admin', 'store-manager', 'owner', 'app-dev' ],
+        default: 'basic',
         required: true,
         unique: true
     }

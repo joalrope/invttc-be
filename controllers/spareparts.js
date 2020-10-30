@@ -128,9 +128,67 @@ const deleteSparePart = async (req = request, res = response ) => {
     }
 }
 
+const getSparePartById = async (req = request, res = response ) => {
+
+    try {
+        const sparePart = await SparePart.findById(req.params.id);
+
+        if (!sparePart) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe un Repuesto con ese id'
+            });
+        }
+
+        res.json({
+            // '/123456'
+            result: sparePart,
+            ok: true,
+            msg: 'Obtener Repuesto'
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador'
+        });
+    }
+}
+
+const getSparePartByCode = async (req = request, res = response ) => {
+
+    try {
+        const sparePart = await SparePart.findOne({"code": 1261813 });
+
+        if (!sparePart) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe un Repuesto con ese id'
+            });
+        }
+
+        res.json({
+            // '/123456'
+            result: sparePart,
+            ok: true,
+            msg: 'Obtener Repuesto'
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador'
+        });
+    }
+}
+
 module.exports = {
-    getEvents: getSpareParts,
-    createEvent: createSparePart,
-    updateEvent: updateSparePart,
-    deleteEvent: deleteSparePart
+    getSpareParts: getSpareParts,
+    getSparePartById: getSparePartById,
+    getSparePartByCode: getSparePartByCode,
+    createSparePart: createSparePart,
+    updateSparePart: updateSparePart,
+    deleteSparePart: deleteSparePart
 }

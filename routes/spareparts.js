@@ -2,7 +2,7 @@ const router = require('express').Router();
 const {check} = require('express-validator');
 const {fieldsValidator} = require('../middlewares/fields-validator');
 const {jwtValidator} = require('../middlewares/jwt-validator');
-const {getEvents, createEvent, updateEvent, deleteEvent} = require('../controllers/events');
+const {getSpareParts, getSparePartByCode, getSparePartById, createSparePart, updateSparePart, deleteSparePart} = require('../controllers/spareparts');
 const {isDate} = require('../helper/isDate');
 
 /*
@@ -15,7 +15,7 @@ router.use(jwtValidator);
 
 
 //Obtener eventos
-router.get('/', getEvents);
+router.get('/', getSpareParts);
 
 
 //Crear un nuevo evento
@@ -31,16 +31,22 @@ router.post(
 
         fieldsValidator
     ],
-    createEvent
+    createSparePart
 );
 
 
 //Actualizar informacion de un evento
-router.put('/:id', updateEvent);
+router.put('/:id', updateSparePart);
 
 
 //Eliminar un evento
-router.delete('/:id', deleteEvent);
+router.delete('/:id', deleteSparePart);
+
+//Obtener un evento mediante Id
+router.get('/:id', getSparePartById);
+
+//Obtener un evento mediante Code
+router.get('/code/:code', getSparePartByCode);
 
 module.exports = router;
 
