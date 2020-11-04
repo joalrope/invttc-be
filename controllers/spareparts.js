@@ -27,17 +27,26 @@ const getSpareParts = async (req = request, res = response ) => {
 
 const createSparePart = async (req = request, res = response ) => {
 
-    const sparePart = new SparePart(req.body);
+    const newSparePart = new SparePart(req.body);
+    const { code } = newSparePart;
 
     try {
-        /* part.user = req.uid;  //req.uid es definido por jwtValidator, que se dispara al accesar a una ruta */
-        const savedSparePart = await sparePart.save()
+        let dbSparePart = await SparePart.findOne({code})
+        
+        if (dbSparePart) {
+            return res.status(400).json({
+                ok: false,
+                msg: `Ya existe un Repuesto con el código ${code}`
+        })} else {
 
-        res.json({
-            ok: true,
-            msg: 'Repuesto creado',
-            result: savedSparePart
-        });
+            const savedSparePart = await newSparePart.save()
+    
+            res.json({
+                ok: true,
+                msg: 'Repuesto creado',
+                result: savedSparePart
+            });  
+        };
 
     } catch (error) {
         console.log(error);
@@ -52,12 +61,12 @@ const createSparePart = async (req = request, res = response ) => {
 const updateSparePart = async (req = request, res = response ) => {
 
     try {
-        const sparePart = await SparePart.findById(req.params.id);
+        const sparePart = await SparePart.findById(req.params.code);
 
         if (!sparePart) {
             return res.status(404).json({
                 ok: false,
-                msg: 'No existe un Repuesto con ese id'
+                msg: `'No existe un Repuesto con el código ${req.params.code}`
             });
         }
 
@@ -69,8 +78,7 @@ const updateSparePart = async (req = request, res = response ) => {
         } */
 
         const newData = {
-            ...req.body,
-            user: req.uid
+            ...req.body
         }
 
         const updatedSparePart = await SparePart.findByIdAndUpdate(req.params.id, newData, {new: true});
@@ -90,6 +98,57 @@ const updateSparePart = async (req = request, res = response ) => {
         });
     }
 }
+
+
+const updateQtySparePart = async (req = request, res = response ) => {
+    
+    try {
+
+        const {code, trademark, location, qty} = req.body;
+        const sparePart = await SparePart.findOne({code});
+
+        if (!sparePart) {
+            return res.status(404).json({
+                ok: false,
+                msg: `No existe un Repuesto con el código: ${code}`
+            });
+        }
+        let posLocation;
+        let posTrademark;
+
+        for (t in sparePart.info){
+            if (sparePart.info[t].trademark === trademark) {
+                posTrademark = t;
+            };
+        }
+
+        for (l in sparePart.info[posTrademark].loc_qty) {
+            if (sparePart.info[posTrademark].loc_qty[l].location === location) {
+                posLocation = l
+            }
+        }
+
+        const qtyField = JSON.parse(`{\"info.${posTrademark}.loc_qty.${posLocation}.qty\": ${qty}}`);
+
+        const updatedQty = await SparePart.updateOne({code}, {$inc: qtyField});    
+        
+        res.json({
+            // '/123456'
+            ok: true,
+            msg: 'Actualizada Cantidad del Repuesto',
+            // result: sparePart
+            result: updatedQty
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador'
+        });
+    }
+}
+
 
 
 const deleteSparePart = async (req = request, res = response ) => {
@@ -142,9 +201,9 @@ const getSparePartById = async (req = request, res = response ) => {
 
         res.json({
             // '/123456'
-            result: sparePart,
             ok: true,
-            msg: 'Obtener Repuesto'
+            msg: 'Obtener Repuesto',
+            result: sparePart
         });
 
     } catch (error) {
@@ -158,21 +217,23 @@ const getSparePartById = async (req = request, res = response ) => {
 
 const getSparePartByCode = async (req = request, res = response ) => {
 
+    const mode = req.header('x-mode');
+    const field = JSON.parse(`{\"${mode}\": 1, \"_id\": 0}`);
+
     try {
-        const sparePart = await SparePart.findOne({"code": 1261813 });
+        const sparePart = await SparePart.find({code: { $regex: `^${req.params.code}`}}, (!!mode) ? field : {});
 
         if (!sparePart) {
             return res.status(404).json({
                 ok: false,
-                msg: 'No existe un Repuesto con ese id'
+                msg: 'No existe un Repuesto con ese Código'
             });
         }
 
         res.json({
-            // '/123456'
-            result: sparePart,
             ok: true,
-            msg: 'Obtener Repuesto'
+            msg: 'Obtener Repuesto',
+            result: sparePart
         });
 
     } catch (error) {
@@ -190,5 +251,6 @@ module.exports = {
     getSparePartByCode: getSparePartByCode,
     createSparePart: createSparePart,
     updateSparePart: updateSparePart,
+    updateQtySparePart: updateQtySparePart,
     deleteSparePart: deleteSparePart
 }

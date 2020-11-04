@@ -1,13 +1,13 @@
 const {Schema, model} = require('mongoose');
-const { schema } = require('./User');
 
 
 const SparePartSchema = Schema({
     code: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
-    description: {
+    title: {
         type: String,
         required: true
 
@@ -16,25 +16,38 @@ const SparePartSchema = Schema({
         type: String,
         required: true
     },
-    equivalent: {
+    info: [{
+        trademark: {
+            type: String,
+            required: true
+        },
+        loc_qty: [{
+            location: {
+                type: String, 
+                required: true
+            },
+            qty: {
+                type: Number,
+                required: true
+            }
+        }],
+        costPrice: {
+            type: Number,
+            required: true
+        },
+        salePrice: {
+            type: Number,
+            required: true
+        }
+    }],
+    measurement: {
         type: String
     },
-    location: {
-        type: String,
-        required: true
-    },
-    price: {
-        type: Number,
-        required: true
-    },
-    qty: {
-        type: Number,
-        required: true
-    },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    replacement: [{
+        type: String
+    }],
+    status: {
+        type: String
     }
 },
 {

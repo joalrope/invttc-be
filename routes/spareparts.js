@@ -2,8 +2,13 @@ const router = require('express').Router();
 const {check} = require('express-validator');
 const {fieldsValidator} = require('../middlewares/fields-validator');
 const {jwtValidator} = require('../middlewares/jwt-validator');
-const {getSpareParts, getSparePartByCode, getSparePartById, createSparePart, updateSparePart, deleteSparePart} = require('../controllers/spareparts');
-const {isDate} = require('../helper/isDate');
+const { getSpareParts,
+        getSparePartByCode,
+        getSparePartById,
+        createSparePart,
+        updateSparePart,
+        updateQtySparePart,
+        deleteSparePart } = require('../controllers/spareparts');
 
 /*
     Rutas de Eventos (events routes)
@@ -22,22 +27,17 @@ router.get('/', getSpareParts);
 router.post(
     '/',
     [
+        check('code').exists().withMessage('El Codigo es Obligatorio'),
         check('title').exists().withMessage('El Titulo es Obligatorio'),
-        check('start').exists().withMessage('La fecha de Inicio es obligatoria')
-            .custom(isDate).withMessage('La fecha de Inicio no es una fecha válida'),
-
-        check('end').exists().withMessage('La fecha de finalización es obligatoria')
-            .custom(isDate).withMessage('La fecha de finalización no es una fecha válida'),
-
         fieldsValidator
     ],
     createSparePart
 );
 
 
-//Actualizar informacion de un evento
+//Actualizar informacion de un Repuesto
 router.put('/:id', updateSparePart);
-
+router.put('/qty/:id', updateQtySparePart);
 
 //Eliminar un evento
 router.delete('/:id', deleteSparePart);
