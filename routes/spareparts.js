@@ -49,4 +49,3 @@ router.get('/:id', getSparePartById);
 router.get('/code/:code', getSparePartByCode);
 
 module.exports = router;
-

@@ -2,26 +2,60 @@ const {request, response} = require('express');
 const SparePart = require('../models/SparePart');
 
 /* 
+Modelo de la Base de Datos MongoDB
 {
-    "code": "7X3454",
-    "description": "SEAL O RING",
-    "category": "part",
-    "equivalent": "",
-    "location": "E23A4",
-    "price": "5.45",
-    "qty": "3"
+    "id": "5f9c3df4b77fe909bd6feb61",
+    "code": "P551712",
+    "category": "FILTER",
+    "title": "FUEL-FILTER",
+    "info": [
+        {
+            "trademark": "DONALDSON",
+            "loc-qty": [
+                {
+                    "location": "RACK-04-D3",
+                    "qty": 38
+                },
+                {
+                    "location": "25-A5",
+                    "qty": 12
+                }
+            ],
+            "costPrice": 7.036005,
+            "salePrice": 22
+        },
+        {
+            "trademark": "BALDWIN",
+            "loc-qty": [
+                {
+                    "location": "RACK-04-D4",
+                    "qty": 5
+                }
+            ],
+            "costPrice": 9.65,
+            "salePrice": 27
+        }
+    ],
+    "replacement": [],
+    "measurement": [],
+    "status": "USADO"
 }
 */
-
+// Funcion que obtiene todos los productos del inventario
 const getSpareParts = async (req = request, res = response ) => {
 
-    const spareParts = await SparePart.find();
-    
-    res.json({
-        ok: true,
-        msg: 'Obtener repuestos',
-        result: spareParts
-    });
+    try {
+        const spareParts = await SparePart.find();
+        
+        res.json({
+            ok: true,
+            msg: 'Obtener repuestos',
+            result: spareParts
+        });
+
+    } catch (error) {
+        msgError(res, error);
+    }
 }
 
 
@@ -29,6 +63,8 @@ const createSparePart = async (req = request, res = response ) => {
 
     const newSparePart = new SparePart(req.body);
     const { code } = newSparePart;
+    console.log(code);
+    console.log(newSparePart);
 
     try {
         let dbSparePart = await SparePart.findOne({code})
@@ -49,11 +85,7 @@ const createSparePart = async (req = request, res = response ) => {
         };
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Por favor hable con el administrador'
-        });
+        msgError(res, error);
     }
 }
 
@@ -91,11 +123,7 @@ const updateSparePart = async (req = request, res = response ) => {
         });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Por favor hable con el administrador'
-        });
+        msgError(error);
     }
 }
 
@@ -113,25 +141,11 @@ const updateQtySparePart = async (req = request, res = response ) => {
                 msg: `No existe un Repuesto con el código: ${code}`
             });
         }
-        let posLocation;
-        let posTrademark;
 
-        for (t in sparePart.info){
-            if (sparePart.info[t].trademark === trademark) {
-                posTrademark = t;
-            };
-        }
+        const updatedQty = await SparePart.updateOne({code},
+                                                     {$inc: {'info.$[inf].loc_qty.$[loc].qty': qty}},
+                                                     {arrayFilters: [{'inf.trademark': trademark}, {'loc.location': location}]});    
 
-        for (l in sparePart.info[posTrademark].loc_qty) {
-            if (sparePart.info[posTrademark].loc_qty[l].location === location) {
-                posLocation = l
-            }
-        }
-
-        const qtyField = JSON.parse(`{\"info.${posTrademark}.loc_qty.${posLocation}.qty\": ${qty}}`);
-
-        const updatedQty = await SparePart.updateOne({code}, {$inc: qtyField});    
-        
         res.json({
             // '/123456'
             ok: true,
@@ -141,14 +155,9 @@ const updateQtySparePart = async (req = request, res = response ) => {
         });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Por favor hable con el administrador'
-        });
+        msgError(error);
     }
 }
-
 
 
 const deleteSparePart = async (req = request, res = response ) => {
@@ -179,13 +188,10 @@ const deleteSparePart = async (req = request, res = response ) => {
         });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Por favor hable con el administrador'
-        });
+        msgError(error);
     }
 }
+
 
 const getSparePartById = async (req = request, res = response ) => {
 
@@ -207,13 +213,10 @@ const getSparePartById = async (req = request, res = response ) => {
         });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Por favor hable con el administrador'
-        });
+        msgError(error);
     }
 }
+
 
 const getSparePartByCode = async (req = request, res = response ) => {
 
@@ -237,12 +240,17 @@ const getSparePartByCode = async (req = request, res = response ) => {
         });
 
     } catch (error) {
-        console.log(error);
+        msgError(error);
+    }
+}
+
+
+const msgError = (res, err) => {
+    console.log(err);
         res.status(500).json({
             ok: false,
             msg: 'Por favor hable con el administrador'
         });
-    }
 }
 
 module.exports = {
