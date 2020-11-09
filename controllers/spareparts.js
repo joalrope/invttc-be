@@ -63,19 +63,44 @@ const createSparePart = async (req = request, res = response ) => {
 
     const newSparePart = new SparePart(req.body);
     const { code } = newSparePart;
-    console.log(code);
-    console.log(newSparePart);
+    let savedSparePart;
 
     try {
-        let dbSparePart = await SparePart.findOne({code})
+        const dbSparePart = await SparePart.findOne({code})
         
-        if (dbSparePart) {
-            return res.status(400).json({
-                ok: false,
-                msg: `Ya existe un Repuesto con el código ${code}`
-        })} else {
+        if (dbSparePart) {    
+            // The information about the new spare part comes on body of request and must have the structure of the model.
+            const data = req.body;
 
-            const savedSparePart = await newSparePart.save()
+            const trademarksAvailable = await SparePart.find({code}).distinct('info.trademark');
+
+            if (trademarksAvailable.includes(data.info.trademark)) {
+
+                savedSparePart = await SparePart.updateOne({code}, {
+                    $push: {
+                        'info.$[inf].loc_qty': data.info.loc_qty
+                    }}, {
+                        arrayFilters: [{'inf.trademark': data.info.trademark}]
+                    });  
+
+                } else {
+
+                    savedSparePart = await SparePart.updateOne({code}, {
+                    $push: {
+                        'info': data.info
+                    }
+                });
+            }
+
+            res.json({
+                ok: false,
+                msg: `Ya existe un repuesto con el código: ${code}`,
+                result: savedSparePart
+            });
+
+        } else {
+
+            savedSparePart = await newSparePart.save()
     
             res.json({
                 ok: true,
