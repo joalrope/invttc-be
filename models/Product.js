@@ -1,7 +1,7 @@
 const {Schema, model} = require('mongoose');
 
 
-const SparePartSchema = Schema({
+const ProductSchema = Schema({
     code: {
         type: String,
         required: true,
@@ -54,11 +54,11 @@ const SparePartSchema = Schema({
      timestamps: true
 });
 
-SparePartSchema.method('toJSON', function() {
+ProductSchema.method('toJSON', function() {
     const {__v, _id, ...object} = this.toObject();
     const id = _id;
     return {id, ...object}
 });
 
 
-module.exports = model ('SparePart', SparePartSchema);
+module.exports = model ('Product', ProductSchema);

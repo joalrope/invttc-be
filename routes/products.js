@@ -2,13 +2,14 @@ const router = require('express').Router();
 const {check} = require('express-validator');
 const {fieldsValidator} = require('../middlewares/fields-validator');
 const {jwtValidator} = require('../middlewares/jwt-validator');
-const { getSpareParts,
-        getSparePartByCode,
-        getSparePartById,
-        createSparePart,
-        updateSparePart,
-        updateQtySparePart,
-        deleteSparePart } = require('../controllers/spareparts');
+const { getProducts,
+        getProductByCode,
+        getProductById,
+        createProduct,
+        updateProduct,
+        updateQtyProduct,
+        deleteProduct 
+        } = require('../controllers/products');
 
 /*
     Rutas de Eventos (events routes)
@@ -20,7 +21,7 @@ router.use(jwtValidator);
 
 
 //Obtener eventos
-router.get('/', getSpareParts);
+router.get('/', getProducts);
 
 
 //Crear un nuevo evento
@@ -31,21 +32,21 @@ router.post(
         check('title').exists().withMessage('El Titulo es Obligatorio'),
         fieldsValidator
     ],
-    createSparePart
+    createProduct
 );
 
 
 //Actualizar informacion de un Repuesto
-router.put('/:id', updateSparePart);
-router.put('/qty/:id', updateQtySparePart);
+router.put('/:id', updateProduct);
+router.put('/qty/:id', updateQtyProduct);
 
 //Eliminar un evento
-router.delete('/:id', deleteSparePart);
+router.delete('/:id', deleteProduct);
 
 //Obtener un evento mediante Id
-router.get('/:id', getSparePartById);
+router.get('/:id', getProductById);
 
 //Obtener un evento mediante Code
-router.get('/code/:code', getSparePartByCode);
+router.get('/code/:code', getProductByCode);
 
 module.exports = router;

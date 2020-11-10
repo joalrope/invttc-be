@@ -31,7 +31,7 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/spareparts', require('./routes/spareparts'));
+app.use('/api/spareparts', require('./routes/products'));
 
 
 
