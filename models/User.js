@@ -1,4 +1,5 @@
 const {Schema, model} = require('mongoose');
+const {Roles} = require('../helper/roles');
 
 
 const UserSchema = Schema({
@@ -17,11 +18,15 @@ const UserSchema = Schema({
     },
     role: {
         type: String,
-        enum: ['basic', 'freelance', 'storer', 'storer-chief', 'seller', 'admin', 'store-manager', 'owner', 'app-dev' ],
-        default: 'basic',
+        enum: Object.values(Roles),
+        default: Roles.Basic,
         required: true,
         unique: true
     }
+});
+
+Object.assign(UserSchema.statics, {
+    Roles
 });
 
 module.exports = model ('User', UserSchema);

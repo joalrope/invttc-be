@@ -1,5 +1,6 @@
 const {request, response} = require('express');
 const Product = require('../models/Product');
+const {Roles} = require('../helper/roles');
 
 /**
  * MongoDB Database model structure
