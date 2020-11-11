@@ -149,13 +149,6 @@ const updateProduct = async (req = request, res = response ) => {
             });
         }
 
-        /* if (part.user.toString() !== req.uid) {
-            return res.status(401).json({
-                ok: false,
-                msg: 'No tiene privilegios para editar este repuesto'
-            });
-        } */
-
         const newData = {
             ...req.body
         }
@@ -218,13 +211,6 @@ const deleteProduct = async (req = request, res = response ) => {
                 msg: `There is no product with id: ${req.params.id}`
             });
         }
-
-        /* if (part.user.toString() !== req.uid) {
-            return res.status(401).json({
-                ok: false,
-                msg: 'No tiene privilegios para Eliminar este evento'
-            });
-        } */
 
         await Product.findByIdAndDelete(req.params.id);
 

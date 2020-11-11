@@ -6,6 +6,8 @@ const { createUser,
         userLogin,
         revalidateToken,
         updateUser} = require('../controllers/auth');
+const {rtUpdateUser} = require('../helper/roles')
+const {allowAccessTo} = require('../middlewares/allow-access-to')
 
 /*
     Rutas de Usuarios / Auth
@@ -48,7 +50,7 @@ router.post(
     userLogin);
 
 router.get('/renew', jwtValidator, revalidateToken);
-router.put('/', jwtValidator, updateUser)
+router.put('/', [jwtValidator, allowAccessTo(rtUpdateUser)], updateUser)
 
 module.exports = router;
 
