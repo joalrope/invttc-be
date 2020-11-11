@@ -27,7 +27,7 @@ const createUser = async(req, res = response) => {
             await user.save();
 
             // Generar JWT (Json Web Token)
-            const token = await generateJWT(user.id, user.name);
+            const token = await generateJWT(user.id, user.name, 'basic');
             
             res.status(201).json({
                 ok: true,
@@ -73,7 +73,7 @@ const userLogin = async (req = request, res = response ) => {
         }
 
         //Generar JWT (Json Web Token)
-        const token = await generateJWT(user.id, user.name);
+        const token = await generateJWT(user.id, user.name, user.role);
 
         res.status(201).json({
             ok: true,
@@ -92,10 +92,9 @@ const userLogin = async (req = request, res = response ) => {
 };
 
 
-const updateUser = async(req = request, res = response) => {
+const updateUserRole = async(req = request, res = response) => {
     
     const {email, role} = req.body;
-    console.log(email, role);
 
     try {
         const user = await User.findOne({email});
@@ -129,15 +128,17 @@ const updateUser = async(req = request, res = response) => {
 
 const revalidateToken = async(req, res = response ) => {
 
-    const {uid, name} = req;
+    const {uid, name, role} = req;
 
-    const token = await generateJWT(uid, name);
+    const token = await generateJWT(uid, name, role);
+    
     
     res.json({
         ok: true,
         msg: 'Nuevo token',
         uid,
         name,
+        role,
         token
     });
 };
@@ -146,6 +147,6 @@ const revalidateToken = async(req, res = response ) => {
 module.exports = {
     createUser,
     userLogin,
-    updateUser,
+    updateUserRole,
     revalidateToken
 }
