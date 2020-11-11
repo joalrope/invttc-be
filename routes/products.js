@@ -10,7 +10,8 @@ const { getProducts,
         updateQtyProduct,
         deleteProduct 
         } = require('../controllers/products');
-
+const {allowAccessTo} = require('../middlewares/allow-access-to');
+const {rtcreateprod} = require('../helper/roles');
 /*
     Rutas de Eventos (events routes)
     host + api/events
@@ -24,10 +25,11 @@ router.use(jwtValidator);
 router.get('/', getProducts);
 
 
-//Crear un nuevo evento
+//Crear un nuevo producto
 router.post(
     '/',
     [
+        allowAccessTo(rtcreateprod),
         check('code').exists().withMessage('El Codigo es Obligatorio'),
         check('title').exists().withMessage('El Titulo es Obligatorio'),
         fieldsValidator
@@ -37,7 +39,7 @@ router.post(
 
 
 //Actualizar informacion de un Repuesto
-router.put('/:id', updateProduct);
+router.put('/:id', allowAccessTo('admin', 'owner') ,updateProduct);
 router.put('/qty/:id', updateQtyProduct);
 
 //Eliminar un evento

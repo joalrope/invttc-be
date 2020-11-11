@@ -20,9 +20,6 @@
 //   }
 // }
 
-
-
-
 const Roles = Object.freeze({
     Basic: 'basic',
     Freelance: 'freelance',
@@ -35,6 +32,9 @@ const Roles = Object.freeze({
     Developer: 'developer' 
 });
 
+const rtcreateprod = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin]; 
+
 module.exports = {
-    Roles
+    Roles,
+    rtcreateprod
 }

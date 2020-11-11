@@ -68,7 +68,7 @@ const userLogin = async (req = request, res = response ) => {
         if (!validPassword) {
             return res.status(400).json({
                 ok: false,
-                msg: `Contraseña incorrecta`
+                msg: `El usuario y/o contraseña no son correctos`
             });
         }
 
@@ -87,6 +87,41 @@ const userLogin = async (req = request, res = response ) => {
         res.status(500).json({
             ok: false,
             msg: 'Por favor hable con el administrador'
+        });
+    }
+};
+
+
+const updateUser = async(req = request, res = response) => {
+    
+    const {email, role} = req.body;
+    console.log(email, role);
+
+    try {
+        const user = await User.findOne({email});
+
+        // Verificar si existe el usuario 
+        if (!user) {
+            return res.status(400).json({
+                ok: false,
+                msg: `No existe un usuario con el correo: ${email}`
+            });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(user.id, {role}, {new: true});
+
+        res.json({
+            // '/123456'
+            ok: true,
+            msg: 'Updated user',
+            result: updatedUser
+        });
+
+    } catch {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: `Ocurrió un error al actualizar los datos del usuario ${user.name}`
         });
     }
 };
@@ -111,5 +146,6 @@ const revalidateToken = async(req, res = response ) => {
 module.exports = {
     createUser,
     userLogin,
+    updateUser,
     revalidateToken
 }

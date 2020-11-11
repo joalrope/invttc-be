@@ -12,7 +12,7 @@ const {Roles} = require('../helper/roles');
  *      "info": [
  *          {
  *              "trademark": "DONALDSON",
- *              "loc-qty": [
+ *              "loc_qty": [
  *                  {
  *                      "location": "RACK-04-D3",
  *                      "qty": 38
@@ -295,10 +295,10 @@ const getProductByCode = async (req = request, res = response ) => {
 
 const msgError = (res, err) => {
     console.log(err);
-        res.status(500).json({
-            ok: false,
-            msg: 'Please, talk to the administrator'
-        });
+    res.status(500).json({
+        ok: false,
+        msg: 'Please, talk to the administrator'
+    });
 }
 
 module.exports = {
