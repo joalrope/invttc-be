@@ -93,10 +93,9 @@ const userLogin = async (req = request, res = response ) => {
 };
 
 
-const updateUser = async(req = request, res = response) => {
+const updateUserRole = async(req = request, res = response) => {
     
     const {email, role} = req.body;
-    console.log(email, role);
 
     try {
         const user = await User.findOne({email});
@@ -133,6 +132,10 @@ const revalidateToken = async(req, res = response ) => {
     const {uid, name, role} = req;
 
     const token = await generateJWT(uid, name, role);
+<<<<<<< HEAD
+=======
+    
+>>>>>>> abe0304d6f4d218df4db576cdec057bf9469789a
     
     res.json({
         ok: true,
@@ -148,6 +151,6 @@ const revalidateToken = async(req, res = response ) => {
 module.exports = {
     createUser,
     userLogin,
-    updateUser,
+    updateUserRole,
     revalidateToken
 }

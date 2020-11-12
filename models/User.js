@@ -20,8 +20,11 @@ const UserSchema = Schema({
         type: String,
         enum: Object.values(Roles),
         default: Roles.Basic,
-        required: true,
-        unique: true
+        required: true
+    },
+    active: {
+        type: Boolean,
+        default: false
     }
 });
 

@@ -11,25 +11,23 @@ const { getProducts,
         deleteProduct 
         } = require('../controllers/products');
 const {allowAccessTo} = require('../middlewares/allow-access-to');
-const {rtcreateprod} = require('../helper/roles');
+const {rtCreateProd, rtUpdateProd, rtDeleteProd} = require('../helper/roles');
 /*
-    Rutas de Eventos (events routes)
-    host + api/events
+    Rutas de Productos (products routes)
+    host + api/products
 */ 
 
 //Todas las rutas deben pasar por la Validacion del Token
 router.use(jwtValidator);
 
-
 //Obtener eventos
 router.get('/', getProducts);
-
 
 //Crear un nuevo producto
 router.post(
     '/',
     [
-        allowAccessTo(rtcreateprod),
+        allowAccessTo(rtCreateProd),
         check('code').exists().withMessage('El Codigo es Obligatorio'),
         check('title').exists().withMessage('El Titulo es Obligatorio'),
         fieldsValidator
@@ -37,18 +35,19 @@ router.post(
     createProduct
 );
 
+//Actualizar informacion de un Producto
+router.put('/:id', allowAccessTo(rtUpdateProd), updateProduct);
 
-//Actualizar informacion de un Repuesto
-router.put('/:id', allowAccessTo('admin', 'owner') ,updateProduct);
+// Actualizar la cantidad de un Producto mediante Id
 router.put('/qty/:id', updateQtyProduct);
 
-//Eliminar un evento
-router.delete('/:id', deleteProduct);
+//Eliminar un Producto
+router.delete('/:id', allowAccessTo(rtDeleteProd), deleteProduct);
 
-//Obtener un evento mediante Id
+//Obtener un Producto mediante Id
 router.get('/:id', getProductById);
 
-//Obtener un evento mediante Code
+//Obtener un Producto mediante Code
 router.get('/code/:code', getProductByCode);
 
 module.exports = router;

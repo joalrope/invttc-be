@@ -4,12 +4,10 @@ const User = require('../models/User');
 // middleware for doing role-based permissions
 const allowAccessTo = (permittedRoles) => {
     // return a middleware
-    return async (req = request, res = response, next) => {
+    return (req = request, res = response, next) => {
         
         try {
-            const user = await User.findById(req.uid);
-
-            if (permittedRoles.includes(user.role)) {
+            if (permittedRoles.includes(req.role)) {
                 next(); // role is allowed, so continue on the next middleware
             } else {
                 res.status(403).json({
