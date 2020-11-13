@@ -77,6 +77,7 @@ const userLogin = async (req = request, res = response ) => {
 
         res.status(201).json({
             ok: true,
+            msg: 'Inicio de sesión exitoso',
             uid: user.id,
             name: user.name,
             role: user.role,
