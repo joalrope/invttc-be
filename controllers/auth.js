@@ -132,10 +132,6 @@ const revalidateToken = async(req, res = response ) => {
     const {uid, name, role} = req;
 
     const token = await generateJWT(uid, name, role);
-<<<<<<< HEAD
-=======
-    
->>>>>>> abe0304d6f4d218df4db576cdec057bf9469789a
     
     res.json({
         ok: true,
