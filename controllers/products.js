@@ -163,7 +163,7 @@ const updateProduct = async (req = request, res = response ) => {
         });
 
     } catch (error) {
-        msgError(error);
+        msgError(res, error);
     }
 }
 
@@ -195,7 +195,7 @@ const updateQtyProduct = async (req = request, res = response ) => {
         });
 
     } catch (error) {
-        msgError(error);
+        msgError(res, error);
     }
 }
 
@@ -221,7 +221,7 @@ const deleteProduct = async (req = request, res = response ) => {
         });
 
     } catch (error) {
-        msgError(error);
+        msgError(res, error);
     }
 }
 
@@ -246,7 +246,7 @@ const getProductById = async (req = request, res = response ) => {
         });
 
     } catch (error) {
-        msgError(error);
+        msgError(res, error);
     }
 }
 
@@ -258,7 +258,8 @@ const getProductByCode = async (req = request, res = response ) => {
     const field = JSON.parse(`{\"${mode}\": 1, \"_id\": 0}`);
 
     try {
-        const curProduct = await Product.find({code: { $regex: `^${code}`}}, (!!mode) ? field : {});
+        const curProduct = await Product.find({code: { $regex: `^${code}`}, 'info.loc_qty.qty': {$gt: 0}}, (!!mode) ? field : {});
+        // const curProduct = await Product.find({code: { $regex: `^${code}`}}, (!!mode) ? field : {});
 
         if (!curProduct) {
             return res.status(404).json({
@@ -274,7 +275,7 @@ const getProductByCode = async (req = request, res = response ) => {
         });
 
     } catch (error) {
-        msgError(error);
+        msgError(res, error);
     }
 }
 
