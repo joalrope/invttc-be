@@ -254,13 +254,13 @@ const getProductById = async (req = request, res = response ) => {
 const getProductByCode = async (req = request, res = response ) => {
 
     const code = req.params.code;
-    const mode = req.header('x-mode');
-    const field = JSON.parse(`{\"${mode}\": 1, \"_id\": 0}`);
+    // const mode = req.header('x-mode');
+    // const field = JSON.parse(`{\"${mode}\": 1, \"_id\": 0}`);
 
     try {
-        const curProduct = await Product.find({code: { $regex: `^${code}`}, 'info.loc_qty.qty': {$gt: 0}}, (!!mode) ? field : {});
+        const curProduct = await Product.find({code: { $regex: `^${code}`}, 'info.loc_qty.qty': {$gt: 0}}, {code: 1, title: 1});
         // const curProduct = await Product.find({code: { $regex: `^${code}`}}, (!!mode) ? field : {});
-
+        
         if (!curProduct) {
             return res.status(404).json({
                 ok: false,
