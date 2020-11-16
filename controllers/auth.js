@@ -62,6 +62,8 @@ const userLogin = async (req = request, res = response ) => {
             });
         }
 
+        //TODO: validar que el usuario este activo
+
         // Confirmar match del password enviado
         const validPassword = bcrypt.compareSync(password, user.password);
 
