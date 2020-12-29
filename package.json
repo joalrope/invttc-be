@@ -1,7 +1,7 @@
 {
   "name": "backend-calendar",
   "version": "1.0.0",
-  "description": "",
+  "description": "Back-end de la aplicacion de Tractocenter, c.a.",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
