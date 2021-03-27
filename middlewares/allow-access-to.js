@@ -3,7 +3,7 @@ const User = require('../models/User');
 
 // middleware for doing role-based permissions
 const allowAccessTo = (permittedRoles) => {
-    // return a middleware
+  
     return (req = request, res = response, next) => {
         
         try {
