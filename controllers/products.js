@@ -68,9 +68,9 @@ const getProducts = async (req = request, res = response ) => {
 const createProduct = async (req = request, res = response ) => {
 
   const newProduct = new Product(req.body);
-  const {code, info} = req.body;
-  const {trademark, loc_qty} = info[0];
-  const {location} = loc_qty[0];
+  const {code, details} = req.body;
+  const {trademark, stock} = details[0];
+  const {location} = stock[0];
   let savedProduct;
 
   try {
@@ -78,13 +78,13 @@ const createProduct = async (req = request, res = response ) => {
     
     if (productDB) {    
 
-      const trademarksAvailable = await Product.find({code}).distinct('info.trademark');
+      const trademarksAvailable = await Product.find({code}).distinct('details.trademark');
 
       if (trademarksAvailable.includes(trademark)) {
 
         savedProduct = await Product.updateOne({code}, {
           $push: {
-            'info.$[inf].loc_qty': loc_qty
+            'details.$[inf].stock': stock
           }}, {
             arrayFilters: [{'inf.trademark': trademark}]
           });  
@@ -98,7 +98,7 @@ const createProduct = async (req = request, res = response ) => {
 
         savedProduct = await Product.updateOne({code}, {
           $push: {
-            'info': info
+            'details': details
           }
         });
 
@@ -163,6 +163,33 @@ const updateProduct = async (req = request, res = response ) => {
   }
 }
 
+const getAvailableQuantity = async (req = request, res = response) => {
+
+  try {
+    const {code, trademark} = req.body;
+    const curProduct = await Product.findOne({code});
+    
+    if (!curProduct) {
+      return res.status(404).json({
+        ok: false,
+        msg: `There is no product with code: ${code}`
+      });
+    }
+    
+    const availableQuantity = await Product.find({'code': code, 'details.trademark': trademark });
+
+    res.json({
+      // '/123456'
+      ok: true,
+      msg: `Available Quantity of product with code: ${code}`,
+      result: availableQuantity
+    });
+
+  } catch (error) {
+    msgError(res, error);
+  }
+}
+
 
 const updateQtyProduct = async (req = request, res = response ) => {
     
@@ -178,7 +205,7 @@ const updateQtyProduct = async (req = request, res = response ) => {
     }
 
     const updatedQty = await Product.updateOne({code},
-                                                {$inc: {'info.$[inf].loc_qty.$[loc].qty': qty}},
+                                                {$inc: {'details.$[inf].stock.$[loc].qty': qty}},
                                                 {arrayFilters: [{'inf.trademark': trademark}, {'loc.location': location}]}
     );    
 
@@ -250,9 +277,9 @@ const getProductByCode = async (req = request, res = response ) => {
   // const field = JSON.parse(`{\"${mode}\": 1, \"_id\": 0}`);
 
   try {
-    const curProduct = await Product.find({code: { $regex: `^${code}`}, 'info.loc_qty.qty': {$gt: 0}}, {_id: 1, code: 1, title: 1}).limit(10);
+    const curProduct = await Product.find({code: { $regex: `^${code}`}, 'details.stock.qty': {$gt: 0}}, {_id: 1, code: 1, title: 1}).limit(10);
     // const curProduct = await Product.find({code: { $regex: `^${code}`}}, (!!mode) ? field : {});
-    
+  
     if (!curProduct) {
       return res.status(404).json({
         ok: false,
@@ -286,5 +313,6 @@ module.exports = {
   getProductById,
   getProductByCode,
   updateProduct,
+  getAvailableQuantity,
   updateQtyProduct
 }

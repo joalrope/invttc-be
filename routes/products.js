@@ -7,6 +7,7 @@ const { getProducts,
         getProductById,
         createProduct,
         updateProduct,
+        getAvailableQuantity,
         updateQtyProduct,
         deleteProduct 
         } = require('../controllers/products');
@@ -35,19 +36,22 @@ router.post(
   createProduct
 );
 
+//Obtener un Producto mediante Id
+router.get('/:id', getProductById);
+
 //Actualizar informacion de un Producto
 router.put('/:id', allowAccessTo(rtUpdateProd), updateProduct);
-
-// Actualizar la cantidad de un Producto mediante Id
-router.put('/qty/:id', updateQtyProduct);
 
 //Eliminar un Producto
 router.delete('/:id', allowAccessTo(rtDeleteProd), deleteProduct);
 
-//Obtener un Producto mediante Id
-router.get('/:id', getProductById);
-
 //Obtener un Producto mediante Code
 router.get('/code/:code', getProductByCode);
+
+// Obtener la cantidad de un Producto en una locación
+router.get('/qty/:id', getAvailableQuantity);
+
+// Actualizar la cantidad de un Producto mediante Id
+router.put('/qty/:id', updateQtyProduct);
 
 module.exports = router;
