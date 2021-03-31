@@ -7,7 +7,6 @@ const { getProducts,
         getProductById,
         createProduct,
         updateProduct,
-        getAvailableQuantity,
         updateQtyProduct,
         deleteProduct 
         } = require('../controllers/products');
@@ -47,9 +46,6 @@ router.delete('/:id', allowAccessTo(rtDeleteProd), deleteProduct);
 
 //Obtener un Producto mediante Code
 router.get('/code/:code', getProductByCode);
-
-// Obtener la cantidad de un Producto en una locación
-router.get('/qty/:id', getAvailableQuantity);
 
 // Actualizar la cantidad de un Producto mediante Id
 router.put('/qty/:id', updateQtyProduct);
