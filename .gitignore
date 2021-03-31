@@ -1,4 +1,8 @@
 .DS_Store
 node_modules/
+<<<<<<< HEAD
 .env
 .vscode
+=======
+.vscode/settings.json
+>>>>>>> 70cb2fd69070de6ee6e9a54be7dfc0d146c498ac

@@ -1,14 +1,14 @@
 
 const Roles = Object.freeze({
-  Basic: 'basic',
-  Freelance: 'freelance',
-  Storer: 'storer',
-  StorerChief: 'storer-chief',
-  Seller: 'seller',
-  Admin: 'admin',
-  StoreManager: 'store-manager',
-  Owner: 'owner',
-  Developer: 'developer' 
+    Basic: 'basic',
+    Freelance: 'freelance',
+    Storer: 'storer',
+    StorerChief: 'storer-chief',
+    Seller: 'seller',
+    Admin: 'admin',
+    StoreManager: 'store-manager',
+    Owner: 'owner',
+    Developer: 'developer' 
 });
 
 const rtCreateProd = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin];    // Crear o agregar Nuevos Productos
@@ -18,9 +18,9 @@ const rtDeleteProd = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles
 const rtUpdateUserRole = [Roles.StoreManager, Roles.Admin, Roles.Owner];                        // Modificar rol del usuario
 
 module.exports = {
-  Roles,
-  rtCreateProd,
-  rtUpdateProd,
-  rtDeleteProd,
-  rtUpdateUserRole
+    Roles,
+    rtCreateProd,
+    rtUpdateProd,
+    rtDeleteProd,
+    rtUpdateUserRole
 }

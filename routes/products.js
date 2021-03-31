@@ -26,14 +26,14 @@ router.get('/', getProducts);
 
 //Crear un nuevo producto
 router.post(
-  '/',
-  [
-    allowAccessTo(rtCreateProd),
-    check('code').exists().withMessage('El Codigo es Obligatorio'),
-    check('title').exists().withMessage('El Titulo es Obligatorio'),
-    fieldsValidator
-  ],
-  createProduct
+    '/',
+    [
+        allowAccessTo(rtCreateProd),
+        check('code').exists().withMessage('El Codigo es Obligatorio'),
+        check('title').exists().withMessage('El Titulo es Obligatorio'),
+        fieldsValidator
+    ],
+    createProduct
 );
 
 //Obtener un Producto mediante Id

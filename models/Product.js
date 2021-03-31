@@ -2,62 +2,63 @@ const {Schema, model} = require('mongoose');
 
 
 const ProductSchema = Schema({
-  code: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  title: {
-    type: String,
-    required: true
+    code: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    title: {
+        type: String,
+        required: true
 
-  },
-  category: {
-    type: String,
-    required: true
-  },
-  details: [{
-    trademark: {
-      type: String,
-      required: true
     },
-    stock: [{
-      location: {
-        type: String, 
+    category: {
+        type: String,
         required: true
-      },
-      qty: {
-        type: Number,
-        required: true
-      }
+    },
+    info: [{
+        trademark: {
+            type: String,
+            required: true
+        },
+        loc_qty: [{
+            location: {
+                type: String, 
+                required: true
+            },
+            qty: {
+                type: Number,
+                required: true
+            }
+        }],
+        costPrice: {
+            type: Number,
+            required: true
+        },
+        salePrice: {
+            type: Number,
+            required: true
+        }
     }],
-    costPrice: {
-      type: Number,
-      required: true
+    measurement: {
+        type: String
     },
-    salePrice: {
-      type: Number,
-      required: true
+    replacement: [{
+        type: String
+    }],
+    status: {
+        type: String
     }
-  }],
-  measurement: {
-    type: String
-  },
-  replacement: [{
-    type: String
-  }],
-  status: {
-    type: String
-  }
 },
 {
-  timestamps: true
+     timestamps: true
 });
 
 ProductSchema.method('toJSON', function() {
-  const {__v, _id, ...object} = this.toObject();
-  const id = _id;
-  return {id, ...object}
+    const {__v, _id, ...object} = this.toObject();
+    const id = _id;
+    return {id, ...object}
 });
+
 
 module.exports = model ('Product', ProductSchema);

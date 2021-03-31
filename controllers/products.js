@@ -39,18 +39,18 @@ const {Roles} = require('../helper/roles');
  */
 const getProducts = async (req = request, res = response ) => {
 
-  try {
-    const products = await Product.find();
-    
-    res.json({
-      ok: true,
-      msg: 'Get products',
-      result: products
-    });
+    try {
+        const products = await Product.find();
+        
+        res.json({
+            ok: true,
+            msg: 'Get products',
+            result: products
+        });
 
-  } catch (error) {
-    msgError(res, error);
-  }
+    } catch (error) {
+        msgError(res, error);
+    }
 }
 
 /**
@@ -67,61 +67,94 @@ const getProducts = async (req = request, res = response ) => {
  */
 const createProduct = async (req = request, res = response ) => {
 
+<<<<<<< HEAD
   const newProduct = new Product(req.body);
   const {code, details} = req.body;
   const {trademark, stock} = details[0];
   const {location} = stock[0];
   let savedProduct;
+=======
+    const newProduct = new Product(req.body);
+    const {code, info} = req.body;
+    const {trademark, loc_qty} = info[0];
+    const {location} = loc_qty[0];
+>>>>>>> 70cb2fd69070de6ee6e9a54be7dfc0d146c498ac
 
-  try {
-    const productDB = await Product.findOne({code})
-    
-    if (productDB) {    
+    let savedProduct;
 
+<<<<<<< HEAD
       const trademarksAvailable = await Product.find({code}).distinct('details.trademark');
+=======
+    try {
+        const productDB = await Product.findOne({code})
+        
+        if (productDB) {    
+>>>>>>> 70cb2fd69070de6ee6e9a54be7dfc0d146c498ac
 
-      if (trademarksAvailable.includes(trademark)) {
+            const trademarksAvailable = await Product.find({code}).distinct('info.trademark');
 
+<<<<<<< HEAD
         savedProduct = await Product.updateOne({code}, {
           $push: {
             'details.$[inf].stock': stock
           }}, {
             arrayFilters: [{'inf.trademark': trademark}]
           });  
+=======
+            if (trademarksAvailable.includes(trademark)) {
+>>>>>>> 70cb2fd69070de6ee6e9a54be7dfc0d146c498ac
 
-        res.json({
-          ok: true,
-          msg: `Created the new location ${location} of the product with code: ${code}`,
-          result: savedProduct
-        });
-      } else {
+                savedProduct = await Product.updateOne({code}, {
+                    $push: {
+                        'info.$[inf].loc_qty': loc_qty
+                    }}, {
+                        arrayFilters: [{'inf.trademark': trademark}]
+                    });  
 
+<<<<<<< HEAD
         savedProduct = await Product.updateOne({code}, {
           $push: {
             'details': details
           }
         });
+=======
+                    res.json({
+                        ok: true,
+                        msg: `Created the new location ${location} of the product with code: ${code}`,
+                        result: savedProduct
+                    });
+>>>>>>> 70cb2fd69070de6ee6e9a54be7dfc0d146c498ac
 
-        res.json({
-          ok: true,
-          msg: `The product's ${trademark} trademark was created in the code: ${code}`,
-          result: savedProduct
-        });
-      }
-    } else {
+            } else {
 
-      savedProduct = await newProduct.save()
+                savedProduct = await Product.updateOne({code}, {
+                    $push: {
+                        'info': info
+                    }
+                });
 
-      res.json({
-        ok: true,
-        msg: 'Product created',
-        result: savedProduct
-      });  
-    };
+                res.json({
+                    ok: true,
+                    msg: `The product's ${trademark} trademark was created in the code: ${code}`,
+                    result: savedProduct
+                });
+            }
 
-  } catch (error) {
-    msgError(res, error);
-  }
+
+        } else {
+
+            savedProduct = await newProduct.save()
+    
+            res.json({
+                ok: true,
+                msg: 'Product created',
+                result: savedProduct
+            });  
+        };
+
+    } catch (error) {
+        msgError(res, error);
+    }
 }
 
 /**
@@ -135,32 +168,32 @@ const createProduct = async (req = request, res = response ) => {
  */
 const updateProduct = async (req = request, res = response ) => {
 
-  try {
-    const curProduct = await Product.findById(req.params.id);
+    try {
+        const curProduct = await Product.findById(req.params.id);
 
-    if (!curProduct) {
-      return res.status(404).json({
-        ok: false,
-        msg: `There is no product with id: ${req.params.id}`
-      });
+        if (!curProduct) {
+            return res.status(404).json({
+                ok: false,
+                msg: `There is no product with id: ${req.params.id}`
+            });
+        }
+
+        const newData = {
+            ...req.body
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, newData, {new: true});
+
+        res.json({
+            // '/123456'
+            ok: true,
+            msg: 'Updated product',
+            result: updatedProduct
+        });
+
+    } catch (error) {
+        msgError(res, error);
     }
-
-    const newData = {
-      ...req.body
-    }
-
-    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, newData, {new: true});
-
-    res.json({
-        // '/123456'
-      ok: true,
-      msg: 'Updated product',
-      result: updatedProduct
-    });
-
-  } catch (error) {
-      msgError(res, error);
-  }
 }
 
 const getAvailableQuantity = async (req = request, res = response) => {
@@ -193,89 +226,112 @@ const getAvailableQuantity = async (req = request, res = response) => {
 
 const updateQtyProduct = async (req = request, res = response ) => {
     
-  try {
-    const {code, trademark, location, qty} = req.body;
-    const curProduct = await Product.findOne({code});
+    try {
 
-    if (!curProduct) {
-      return res.status(404).json({
-        ok: false,
-        msg: `There is no product with code: ${code}`
-      });
-    }
+        const {code, trademark, location, qty} = req.body;
+        const curProduct = await Product.findOne({code});
 
+<<<<<<< HEAD
     const updatedQty = await Product.updateOne({code},
                                                 {$inc: {'details.$[inf].stock.$[loc].qty': qty}},
                                                 {arrayFilters: [{'inf.trademark': trademark}, {'loc.location': location}]}
     );    
+=======
+        if (!curProduct) {
+            return res.status(404).json({
+                ok: false,
+                msg: `There is no product with code: ${code}`
+            });
+        }
+>>>>>>> 70cb2fd69070de6ee6e9a54be7dfc0d146c498ac
 
-    res.json({
-      // '/123456'
-      ok: true,
-      msg: 'Updated product quantity',
-      result: updatedQty
-    });
-  } catch (error) {
-    msgError(res, error);
-  }
+        const updatedQty = await Product.updateOne({code},
+                                                   {$inc: {'info.$[inf].loc_qty.$[loc].qty': qty}},
+                                                   {arrayFilters: [{'inf.trademark': trademark}, {'loc.location': location}]}
+        );    
+
+        res.json({
+            // '/123456'
+            ok: true,
+            msg: 'Updated product quantity',
+            result: updatedQty
+        });
+
+    } catch (error) {
+        msgError(res, error);
+    }
 }
 
 
 const deleteProduct = async (req = request, res = response ) => {
 
-  try {
-    const curProduct = await Product.findById(req.params.id);
+    try {
+        const curProduct = await Product.findById(req.params.id);
 
-    if (!curProduct) {
-      return res.status(404).json({
-        ok: false,
-        msg: `There is no product with id: ${req.params.id}`
-      });
+        if (!curProduct) {
+            return res.status(404).json({
+                ok: false,
+                msg: `There is no product with id: ${req.params.id}`
+            });
+        }
+
+        await Product.findByIdAndDelete(req.params.id);
+
+        res.json({
+            // '/123456'
+            ok: true,
+            msg: 'product removed'
+        });
+
+    } catch (error) {
+        msgError(res, error);
     }
-
-    await Product.findByIdAndDelete(req.params.id);
-
-    res.json({
-      // '/123456'
-      ok: true,
-      msg: 'product removed'
-    });
-  } catch (error) {
-    msgError(res, error);
-  }
 }
 
 
 const getProductById = async (req = request, res = response ) => {
 
-  try {
-    const curProduct = await Product.findById(req.params.id);
+    try {
+        const curProduct = await Product.findById(req.params.id);
 
-    if (!curProduct) {
-      return res.status(404).json({
-        ok: false,
-        msg: `There is no product with id: ${req.params.id}`
-      });
+        if (!curProduct) {
+            return res.status(404).json({
+                ok: false,
+                msg: `There is no product with id: ${req.params.id}`
+            });
+        }
+
+        res.json({
+            // '/123456'
+            ok: true,
+            msg: 'Product geted by id',
+            result: curProduct
+        });
+
+    } catch (error) {
+        msgError(res, error);
     }
-
-    res.json({
-      // '/123456'
-      ok: true,
-      msg: 'Product geted by id',
-      result: curProduct
-    });
-  } catch (error) {
-    msgError(res, error);
-  }
 }
 
 
 const getProductByCode = async (req = request, res = response ) => {
 
-  const code = req.params.code;
-  // const mode = req.header('x-mode');
-  // const field = JSON.parse(`{\"${mode}\": 1, \"_id\": 0}`);
+    const code = req.params.code;
+    // const mode = req.header('x-mode');
+    // const field = JSON.parse(`{\"${mode}\": 1, \"_id\": 0}`);
 
+    try {
+        const curProduct = await Product.find({code: { $regex: `^${code}`}, 'info.loc_qty.qty': {$gt: 0}}, {_id: 1, code: 1, title: 1}).limit(10);
+        // const curProduct = await Product.find({code: { $regex: `^${code}`}}, (!!mode) ? field : {});
+        
+        if (!curProduct) {
+            return res.status(404).json({
+                ok: false,
+                msg: `There is no product with code: ${code}`
+            });
+        }
+
+<<<<<<< HEAD
   try {
     const curProduct = await Product.find({code: { $regex: `^${code}`}, 'details.stock.qty': {$gt: 0}}, {_id: 1, code: 1, title: 1}).limit(10);
     // const curProduct = await Product.find({code: { $regex: `^${code}`}}, (!!mode) ? field : {});
@@ -286,27 +342,30 @@ const getProductByCode = async (req = request, res = response ) => {
         msg: `There is no product with code: ${code}`
       });
     }
+=======
+        res.json({
+            ok: true,
+            msg: 'Product geted by code',
+            result: curProduct
+        });
+>>>>>>> 70cb2fd69070de6ee6e9a54be7dfc0d146c498ac
 
-    res.json({
-      ok: true,
-      msg: 'Product geted by code',
-      result: curProduct
-    });
-  } catch (error) {
-    msgError(res, error);
-  }
+    } catch (error) {
+        msgError(res, error);
+    }
 }
 
 
 const msgError = (res, err) => {
-  console.log(err);
-  res.status(500).json({
-    ok: false,
-    msg: 'Please, talk to the administrator'
-  });
+    console.log(err);
+    res.status(500).json({
+        ok: false,
+        msg: 'Please, talk to the administrator'
+    });
 }
 
 module.exports = {
+<<<<<<< HEAD
   createProduct,
   deleteProduct,
   getProducts,
@@ -315,4 +374,13 @@ module.exports = {
   updateProduct,
   getAvailableQuantity,
   updateQtyProduct
+=======
+    createProduct,
+    deleteProduct,
+    getProducts,
+    getProductById,
+    getProductByCode,
+    updateProduct,
+    updateQtyProduct
+>>>>>>> 70cb2fd69070de6ee6e9a54be7dfc0d146c498ac
 }
