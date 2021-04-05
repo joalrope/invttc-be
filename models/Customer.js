@@ -51,4 +51,4 @@ CustomerSchema.method.toJSON = function() {
   return {id, ...object}
 };
 
-module.exports = model ('Client', CustomerSchema);
+module.exports = model ('Customer', CustomerSchema);
