@@ -287,6 +287,5 @@ module.exports = {
   getProductById,
   getProductByCode,
   updateProduct,
-  updateQtyProduct,
-  msgError
+  updateQtyProduct
 }
