@@ -11,7 +11,7 @@ const { getProducts,
         deleteProduct 
         } = require('../controllers/products');
 const {allowAccessTo} = require('../middlewares/allow-access-to');
-const {rtCreateProd, rtUpdateProd, rtDeleteProd} = require('../helper/roles');
+const {createReg, updateReg, deleteReg} = require('../helper/roles');
 /*
     Rutas de Productos (products routes)
     host + api/products
@@ -27,7 +27,7 @@ router.get('/', getProducts);
 router.post(
     '/',
     [
-        allowAccessTo(rtCreateProd),
+        allowAccessTo(createReg),
         check('code').exists().withMessage('El Codigo es Obligatorio'),
         check('title').exists().withMessage('El Titulo es Obligatorio'),
         fieldsValidator
@@ -39,10 +39,10 @@ router.post(
 router.get('/:id', getProductById);
 
 //Actualizar informacion de un Producto
-router.put('/:id', allowAccessTo(rtUpdateProd), updateProduct);
+router.put('/:id', allowAccessTo(updateReg), updateProduct);
 
 //Eliminar un Producto
-router.delete('/:id', allowAccessTo(rtDeleteProd), deleteProduct);
+router.delete('/:id', allowAccessTo(deleteReg), deleteProduct);
 
 //Obtener un Producto mediante Code
 router.get('/code/:code', getProductByCode);

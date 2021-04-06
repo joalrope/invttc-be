@@ -11,16 +11,15 @@ const Roles = Object.freeze({
     Developer: 'developer' 
 });
 
-const rtCreateProd = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin];    // Crear o agregar Nuevos Productos
-const rtUpdateProd = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin];    // Modificar Productos
-const rtDeleteProd = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin];    // Eliminar Productos
-
-const rtUpdateUserRole = [Roles.StoreManager, Roles.Admin, Roles.Owner];                        // Modificar rol del usuario
+const createReg = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin, Roles.Developer];    // Crear o agregar Nuevos Productos
+const updateReg = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin];    // Modificar Productos
+const deleteReg = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin];    // Eliminar Productos
+const updateRol = [Roles.StoreManager, Roles.Admin, Roles.Owner];                        // Modificar rol del usuario
 
 module.exports = {
     Roles,
-    rtCreateProd,
-    rtUpdateProd,
-    rtDeleteProd,
-    rtUpdateUserRole
+    createReg,
+    updateReg,
+    deleteReg,
+    updateRol
 }
