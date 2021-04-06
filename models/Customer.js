@@ -11,11 +11,17 @@ const CustomerSchema = Schema({
     type: String,
     required: true
   },
+  isCompany: {
+    type: Boolean
+  },
   address: {
     type: String,
-    require: true
+    required: true
   },
   phone: {
+    type: String
+  },
+  email: {
     type: String
   },
   isClient: {
@@ -23,22 +29,22 @@ const CustomerSchema = Schema({
     default: false
   },
   contact: [{
-    name: {
+    contactName: {
       type: String,
-      require: function() { return this.isClient; }
+      required: function() { return this.isClient; }
     }, 
-    phone: {
+    contactPhone: {
       type: String,
-      require: function() { return this.isClient; }
+      required: function() { return this.isClient; }
     },
-    email: {
+    contactEmail: {
       type: String,
-      require: function() { return this.isClient; }
+      required: function() { return this.isClient; }
     }
   }],
   creditLimit: {
     type: Number,
-    require: function() { return this.isClient; }
+    required: function() { return this.isClient; }
   }
 },
 {
