@@ -4,7 +4,6 @@ require('dotenv').config();
 const { dbConnection } = require('./database/config');
 
 
-
 // Crear el servidor de Express
 const app = express();
 
@@ -13,27 +12,24 @@ const app = express();
 dbConnection();
 
 
+// Middlewares (Funciones que se ejecutaran cada vez que se realicen peticiones)
 //CORS ==> comunicacion cruzada entre servidores
 app.use(cors());
 
 
-
-// Middlewares (Funciones que se ejecutaran cada vez que se realicen peticiones)
 // Directorio publico (Archivos estaticos)
 app.use(express.static('public'));
-
 
 
 // Lectura y parseo del body
 app.use(express.json());
 
 
-
 // Rutas
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/products', require('./routes/products'));
 app.use('/api/customers', require('./routes/customers'));
-
+app.use('/api/sales', require('./routes/sales'));
 
 
 // Escuchar peticiones
