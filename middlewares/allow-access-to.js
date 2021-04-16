@@ -1,5 +1,4 @@
 const {request, response} = require('express');
-const User = require('../models/User');
 
 // middleware for doing role-based permissions
 const allowAccessTo = (permittedRoles) => {
