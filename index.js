@@ -25,6 +25,17 @@ app.use(express.static('public'));
 app.use(express.json());
 
 
+app.post('*', async (req, res, next) => {
+    const role = req.header('x-role');
+    console.log(role)
+    if (!role === 'basic') {
+        console.log('POST happen', role)
+        next();
+    }
+    next()
+})
+
+
 // Rutas
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/products', require('./routes/products'));

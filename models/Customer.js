@@ -24,7 +24,7 @@ const CustomerSchema = Schema({
   email: {
     type: String
   },
-  isClient: {
+  isRegularCustomer: {
     type: Boolean,
     default: false
   },

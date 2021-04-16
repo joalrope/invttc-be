@@ -1,7 +1,7 @@
 {
-  "name": "backend-calendar",
+  "name": "backend-invtc",
   "version": "1.0.0",
-  "description": "",
+  "description": "APIRest de la aplicación del inventario de tractocenter",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
