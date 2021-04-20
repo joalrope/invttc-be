@@ -4,7 +4,7 @@ const { Roles } = require('../helper/roles');
 const UserSchema = Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'El Nombre es obligatorio'],
   },
   email: {
     type: String,
