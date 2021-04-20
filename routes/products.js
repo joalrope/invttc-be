@@ -1,21 +1,22 @@
 const router = require('express').Router();
-const {check} = require('express-validator');
-const {fieldsValidator} = require('../middlewares/fields-validator');
-const {jwtValidator} = require('../middlewares/jwt-validator');
-const { getProducts,
-        getProductByCode,
-        getProductById,
-        createProduct,
-        updateProduct,
-        updateQtyProduct,
-        deleteProduct 
-        } = require('../controllers/products');
-const {allowAccessTo} = require('../middlewares/allow-access-to');
-const {createReg, updateReg, deleteReg} = require('../helper/roles');
+const { check } = require('express-validator');
+const { fieldsValidator } = require('../middlewares/fields-validator');
+const { jwtValidator } = require('../middlewares/jwt-validator');
+const {
+  getProducts,
+  getProductByCode,
+  getProductById,
+  createProduct,
+  updateProduct,
+  updateQtyProduct,
+  deleteProduct,
+} = require('../controllers/products');
+const { allowAccessTo } = require('../middlewares/allow-access-to');
+const { createReg, updateReg, deleteReg } = require('../helper/roles');
 /*
     Rutas de Productos (products routes)
     host + api/products
-*/ 
+*/
 
 //Todas las rutas deben pasar por la Validacion del Token
 router.use(jwtValidator);
@@ -25,14 +26,14 @@ router.get('/', getProducts);
 
 //Crear un nuevo producto
 router.post(
-    '/',
-    [
-        allowAccessTo(createReg),
-        check('code').exists().withMessage('El Codigo es Obligatorio'),
-        check('title').exists().withMessage('El Titulo es Obligatorio'),
-        fieldsValidator
-    ],
-    createProduct
+  '/',
+  [
+    allowAccessTo(createReg),
+    check('code').exists().withMessage('El Codigo es Obligatorio'),
+    check('title').exists().withMessage('El Titulo es Obligatorio'),
+    fieldsValidator,
+  ],
+  createProduct
 );
 
 //Obtener un Producto mediante Id

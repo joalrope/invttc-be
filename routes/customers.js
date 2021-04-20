@@ -1,19 +1,21 @@
 const router = require('express').Router();
-const {check} = require('express-validator');
-const {fieldsValidator} = require('../middlewares/fields-validator');
-const {jwtValidator} = require('../middlewares/jwt-validator');
-const { getCustomers,
-        getCustomerByCode,
-        getCustomerById,
-        createCustomer,
-        updateCustomer,
-        deleteCustomer } = require('../controllers/customers');
-const {allowAccessTo} = require('../middlewares/allow-access-to');
-const {createReg, updateReg, deleteReg} = require('../helper/roles');
+const { check } = require('express-validator');
+const { fieldsValidator } = require('../middlewares/fields-validator');
+const { jwtValidator } = require('../middlewares/jwt-validator');
+const {
+  getCustomers,
+  getCustomerByCode,
+  getCustomerById,
+  createCustomer,
+  updateCustomer,
+  deleteCustomer,
+} = require('../controllers/customers');
+const { allowAccessTo } = require('../middlewares/allow-access-to');
+const { createReg, updateReg, deleteReg } = require('../helper/roles');
 /*
     Rutas de Clientes (customers routes)
     host + api/customers
-*/ 
+*/
 
 //Todas las rutas deben pasar por la Validacion del Token
 router.use(jwtValidator);
@@ -23,14 +25,14 @@ router.get('/', getCustomers);
 
 //Crear un nuevo cliente
 router.post(
-    '/',
-    [
-        allowAccessTo(createReg),
-        check('code').exists().withMessage('El Codigo es Obligatorio'),
-        check('name').exists().withMessage('El Titulo es Obligatorio'),
-        fieldsValidator
-    ],
-    createCustomer
+  '/',
+  [
+    allowAccessTo(createReg),
+    check('code').exists().withMessage('El Codigo es Obligatorio'),
+    check('name').exists().withMessage('El Titulo es Obligatorio'),
+    fieldsValidator,
+  ],
+  createCustomer
 );
 
 //Obtener un Cliente mediante Id

@@ -1,137 +1,130 @@
-const {request, response} = require('express');
+const { request, response } = require('express');
 const Sale = require('../models/Sale');
 
-
-const getSales = async (req = request, res = response ) => {
+const getSales = async (req = request, res = response) => {
   try {
     const sales = await Sale.find();
-    
+
     res.json({
       ok: true,
       msg: 'Get sales',
-      result: sales
+      result: sales,
     });
   } catch (error) {
     msgError(res, error);
   }
-}
+};
 
-
-const createSale = async (req = request, res = response ) => {
+const createSale = async (req = request, res = response) => {
   const newSale = new Sale(req.body);
-  const {InvoiceId, customer} = newSale;
+  const { InvoiceId, customer } = newSale;
 
   try {
-    const curSale = await Sale.findOne({InvoiceId});
+    const curSale = await Sale.findOne({ InvoiceId });
     if (curSale) {
       return res.status(400).json({
         ok: false,
-        msg: `Ya existe la Venta: ${InvoiceId} al cliente ${customer.name}`
+        msg: `Ya existe la Venta: ${InvoiceId} al cliente ${customer.name}`,
       });
     } else {
-      const savedSale = await newSale.save()
+      const savedSale = await newSale.save();
       res.json({
         ok: true,
         msg: 'Sale created',
-        result: savedSale
-      });  
-    };
+        result: savedSale,
+      });
+    }
   } catch (error) {
     msgError(res, error);
   }
-}
+};
 
-
-const updateSale = async (req = request, res = response ) => {
+const updateSale = async (req = request, res = response) => {
   try {
     const curSale = await Sale.findById(req.params.id);
     if (!curSale) {
       return res.status(404).json({
         ok: false,
-        msg: `There is no sale with id: ${req.params.id}`
+        msg: `There is no sale with id: ${req.params.id}`,
       });
     }
-    const newData = { ...req.body }
-    const updatedSale = await Sale.findByIdAndUpdate(req.params.id, newData, {new: true});
+    const newData = { ...req.body };
+    const updatedSale = await Sale.findByIdAndUpdate(req.params.id, newData, { new: true });
     res.json({
       ok: true,
       msg: 'Updated sale',
-      result: updatedSale
+      result: updatedSale,
     });
   } catch (error) {
-      msgError(res, error);
+    msgError(res, error);
   }
-}
+};
 
-
-const deleteSale = async (req = request, res = response ) => {
+const deleteSale = async (req = request, res = response) => {
   try {
     const curSale = await Sale.findById(req.params.id);
     if (!curSale) {
       return res.status(404).json({
         ok: false,
-        msg: `There is no sale with id: ${req.params.id}`
+        msg: `There is no sale with id: ${req.params.id}`,
       });
     }
     await Sale.findByIdAndDelete(req.params.id);
     res.json({
       ok: true,
-      msg: 'sale removed'
+      msg: 'sale removed',
     });
   } catch (error) {
     msgError(res, error);
   }
-}
+};
 
-
-const getSaleById = async (req = request, res = response ) => {
+const getSaleById = async (req = request, res = response) => {
   try {
     const curSale = await Sale.findById(req.params.id);
     if (!curSale) {
       return res.status(404).json({
         ok: false,
-        msg: `There is no sale with id: ${req.params.id}`
+        msg: `There is no sale with id: ${req.params.id}`,
       });
     }
     res.json({
       ok: true,
       msg: 'Sale geted by id',
-      result: curSale
+      result: curSale,
     });
   } catch (error) {
     msgError(res, error);
   }
-}
+};
 
-
-const getSaleByCode = async (req = request, res = response ) => {
+const getSaleByCode = async (req = request, res = response) => {
   const code = req.params.code;
   try {
-    const curSale = await Sale.find({code: { $regex: `^${code}`}}, {_id: 1, code: 1, customer: 1}).limit(10);
+    const curSale = await Sale.find({ code: { $regex: `^${code}` } }, { _id: 1, code: 1, customer: 1 }).limit(10);
     if (!curSale) {
       return res.status(404).json({
         ok: false,
-        msg: `There is no sale with code: ${code}`
+        msg: `There is no sale with code: ${code}`,
       });
     }
     res.json({
       ok: true,
       msg: 'Sale geted by code',
-      result: curSale
+      result: curSale,
     });
   } catch (error) {
     msgError(res, error);
   }
-}
-
+};
 
 const msgError = (res, err) => {
   console.log(err);
   res.status(500).json({
     ok: false,
-    msg: 'Please, talk to the administrator'
+    msg: 'Please, talk to the administrator',
   });
-}
+};
 
 module.exports = {
   getSales,
@@ -140,4 +133,4 @@ module.exports = {
   deleteSale,
   getSaleById,
   getSaleByCode,
-}
+};

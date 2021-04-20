@@ -1,64 +1,69 @@
-const {Schema, model} = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-
-const ProductSchema = Schema({
+const ProductSchema = Schema(
+  {
     code: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
     title: {
-        type: String,
-        required: true
-
+      type: String,
+      required: true,
     },
     category: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-    info: [{
+    info: [
+      {
         trademark: {
-            type: String,
-            required: true
+          type: String,
+          required: true,
         },
-        loc_qty: [{
+        loc_qty: [
+          {
             location: {
-                type: String, 
-                required: true
+              type: String,
+              required: true,
             },
             qty: {
-                type: Number,
-                required: true
-            }
-        }],
+              type: Number,
+              required: true,
+            },
+          },
+        ],
         costPrice: {
-            type: Number,
-            required: true
+          type: Number,
+          required: true,
         },
         salePrice: {
-            type: Number,
-            required: true
-        }
-    }],
+          type: Number,
+          required: true,
+        },
+      },
+    ],
     measurement: {
-        type: String
+      type: String,
     },
-    replacement: [{
-        type: String
-    }],
+    replacement: [
+      {
+        type: String,
+      },
+    ],
     status: {
-        type: String
-    }
-},
-{
-     timestamps: true
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+ProductSchema.method('toJSON', function () {
+  const { __v, _id, ...object } = this.toObject();
+  const id = _id;
+  return { id, ...object };
 });
 
-ProductSchema.method('toJSON', function() {
-    const {__v, _id, ...object} = this.toObject();
-    const id = _id;
-    return {id, ...object}
-});
-
-
-module.exports = model ('Product', ProductSchema);
+module.exports = model('Product', ProductSchema);
