@@ -15,13 +15,13 @@ const ProductSchema = Schema(
       type: String,
       required: true,
     },
-    info: [
+    details: [
       {
         trademark: {
           type: String,
           required: true,
         },
-        loc_qty: [
+        stock: [
           {
             location: {
               type: String,

@@ -118,14 +118,6 @@ const getSaleByCode = async (req = request, res = response) => {
   }
 };
 
-const msgError = (res, err) => {
-  console.log(err);
-  res.status(500).json({
-    ok: false,
-    msg: 'Please, talk to the administrator',
-  });
-};
-
 module.exports = {
   getSales,
   createSale,
