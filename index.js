@@ -17,7 +17,7 @@ app.use('/api/auth', require('./routes/auth')); // Rutas
 app.use('/api/products', require('./routes/products'));
 app.use('/api/customers', require('./routes/customers'));
 app.use('/api/sales', require('./routes/sales'));
-app.use('/api/invoices', require('./routes/invoices'));
+app.use('/api/transaction', require('./routes/transaction'));
 
 app.listen(process.env.PORT, () => {
   console.log(`Servidor corriendo en el puerto: ${process.env.PORT}`);

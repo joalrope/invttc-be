@@ -173,7 +173,11 @@ const updateQtyProduct = async (req = request, res = response) => {
       });
     }
 
-    const updatedQty = await Product.updateOne({ code }, { $inc: { lastInvoice: 1 } });
+    const updatedQty = await Product.updateOne(
+      { code },
+      { $inc: { 'details.$[det].stock.$[loc].qty': qty } },
+      { arrayFilters: [{ 'det.trademark': trademark }, { 'loc.location': location }] }
+    );
 
     res.json({
       // '/123456'

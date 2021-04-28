@@ -8,6 +8,10 @@ const SaleSchema = Schema(
       unique: true,
     },
     date: {
+      type: Date,
+      required: true,
+    },
+    coin: {
       type: String,
       required: true,
     },
@@ -23,6 +27,10 @@ const SaleSchema = Schema(
     items: [
       {
         code: {
+          type: String,
+          required: true,
+        },
+        title: {
           type: String,
           required: true,
         },
@@ -45,21 +53,27 @@ const SaleSchema = Schema(
         },
       },
     ],
-    total: {
+    purchaseTotal: {
       type: Number,
       require: true,
     },
-    tax: {
-      rate: {
-        type: Number,
-        required: true,
+    taxes: [
+      {
+        title: {
+          type: String,
+          required: true,
+        },
+        rate: {
+          type: Number,
+          required: true,
+        },
+        amount: {
+          type: Number,
+          required: true,
+        },
       },
-      amount: {
-        type: Number,
-        required: true,
-      },
-    },
-    grandTotal: {
+    ],
+    invoiceTotal: {
       type: Number,
       required: true,
     },
@@ -69,8 +83,11 @@ const SaleSchema = Schema(
         default: false,
         required: true,
       },
-      method: {
-        type: String,
+      creditDays: {
+        type: Number,
+        required: function () {
+          return this.onCredit;
+        },
       },
       isPaid: {
         type: Boolean,

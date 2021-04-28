@@ -2,19 +2,24 @@ const { Schema, model } = require('mongoose');
 
 const InvoiceSchema = Schema(
   {
-    lastInvoice: {
-      type: Number,
+    transaction: {
+      InvoiceNumber: {},
+      date: {},
+      customerName: {},
+      onCredit: {},
+      creditDays: {},
+      purchaseTotal: {},
+      ivaTax: {},
+      ivaTaxAmount: {},
+      invoiceTotal: {},
     },
-    taxes: [
+    items: [
       {
-        title: {
-          type: String,
-          required: true,
-        },
-        value: {
-          type: Number,
-          required: true,
-        },
+        code: {},
+        title: {},
+        qty: {},
+        salePrice: {},
+        totalItem: {},
       },
     ],
   },
