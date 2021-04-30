@@ -5,23 +5,26 @@ const { padLeft } = require('../helper/padLeft');
 const getNextNumberTransaction = async (req = request, res = response) => {
   try {
     const transaction = await Transaction.find({}, { lastTransaction: 1 });
-    let { lastTransaction } = transaction[0];
-    const curDate = new Date();
 
-    const nextNumberTransaction = `${curDate.getFullYear().toString().slice(-2)}${padLeft(
-      curDate.getMonth() + 1,
-      2
-    )}-${padLeft(lastTransaction + 1, 4)}`;
+    if (transaction[0]) {
+      let { lastTransaction } = transaction[0];
+      const curDate = new Date();
 
-    const [result] = await Transaction.find({ 'taxes.title': 'IVA' }, { 'taxes.value.$': 1, _id: 0 });
-    const { taxes } = result;
-    const { value } = taxes[0];
+      const nextNumberTransaction = `${curDate.getFullYear().toString().slice(-2)}${padLeft(
+        curDate.getMonth() + 1,
+        2
+      )}-${padLeft(lastTransaction + 1, 4)}`;
 
-    res.json({
-      ok: true,
-      msg: 'last Transaction',
-      result: { nextNumberTransaction, ivaTax: value },
-    });
+      const [result] = await Transaction.find({ 'taxes.title': 'IVA' }, { 'taxes.value.$': 1, _id: 0 });
+      const { taxes } = result;
+      const { value } = taxes[0];
+
+      res.json({
+        ok: true,
+        msg: 'last Transaction',
+        result: { nextNumberTransaction, ivaTax: value },
+      });
+    }
   } catch (error) {
     msgError(res, error);
   }
