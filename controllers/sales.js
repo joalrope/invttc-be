@@ -1,5 +1,6 @@
 const { request, response } = require('express');
 const Sale = require('../models/Sale');
+const { msgError } = require('./products');
 
 const getSales = async (req = request, res = response) => {
   try {

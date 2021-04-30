@@ -281,4 +281,5 @@ module.exports = {
   getProductByCode,
   updateProduct,
   updateQtyProduct,
+  msgError,
 };

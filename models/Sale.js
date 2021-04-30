@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const SaleSchema = Schema(
   {
-    InvoiceId: {
+    invoiceId: {
       type: String,
       required: true,
       unique: true,
