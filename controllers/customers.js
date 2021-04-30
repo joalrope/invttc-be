@@ -1,6 +1,6 @@
 const { request, response } = require('express');
 const Customer = require('../models/Customer');
-const msgError = require('./products');
+const { msgError } = require('./products');
 
 const createCustomer = async (req = request, res = response) => {
   const newCustomer = new Customer(req.body);
