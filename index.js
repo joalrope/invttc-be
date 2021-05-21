@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const { dbConnection } = require('./database/config');
-const { permits } = require('./middlewares/permits');
+//const { permits } = require('./middlewares/permits');
 
 const app = express(); // Crear el servidor de Express
 
@@ -11,7 +11,7 @@ app.use(cors()); //CORS ==> comunicacion cruzada entre servidores
 app.use(express.static('public')); // Directorio publico (Archivos estaticos)
 app.use(express.json()); // Lectura y parseo del body
 
-permits(app);
+//app.use(permits());
 
 app.use('/api/auth', require('./routes/auth')); // Rutas
 app.use('/api/products', require('./routes/products'));

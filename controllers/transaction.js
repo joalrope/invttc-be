@@ -15,14 +15,14 @@ const getNextNumberTransaction = async (req = request, res = response) => {
         2
       )}-${padLeft(lastTransaction + 1, 4)}`;
 
-      const [result] = await Transaction.find({ 'taxes.title': 'IVA' }, { 'taxes.value.$': 1, _id: 0 });
+      const [result] = await Transaction.find({ 'taxes.title': 'IVA' }, { taxes: 1, _id: 0 });
       const { taxes } = result;
-      const { value } = taxes[0];
+      const { rate } = taxes[0];
 
       res.json({
         ok: true,
         msg: 'last Transaction',
-        result: { nextNumberTransaction, ivaTax: value },
+        result: { nextNumberTransaction, ivaTax: rate },
       });
     }
   } catch (error) {
