@@ -61,14 +61,21 @@ const getCustomerById = async (req = request, res = response) => {
 const getCustomerByCode = async (req = request, res = response) => {
   const code = req.params.code;
   try {
-    const foundCustomers = await Customer.find({ code: { $regex: `^${code}` } }, { _id: 1, code: 1, name: 1 }).limit(
+    let foundCustomers = await Customer.find({ code: { $regex: `^${code}` } }, { _id: 1, code: 1, name: 1 }).limit(
       10
     );
-    if (!foundCustomers) {
-      return res.status(404).json({
-        ok: false,
-        msg: `There is no customer with code: ${code}`,
-      });
+
+    if (foundCustomers.length === 0) {
+      foundCustomers = await Customer.find({ name: { $regex: new RegExp(code, "i")  } }, { _id: 1, code: 1, name: 1 }).limit(
+        10
+      );
+    }
+    if (foundCustomers === 0) {
+    return res.status(404).json({
+      ok: false,
+      msg: `There is no customer with code or name: ${code}`,
+      result: [{}]
+    });
     }
 
     res.json({
