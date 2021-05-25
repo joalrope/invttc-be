@@ -70,14 +70,11 @@ const getCustomerByCode = async (req = request, res = response) => {
         10
       );
     }
-    if (foundCustomers === 0) {
-    return res.status(404).json({
-      ok: false,
-      msg: `There is no customer with code or name: ${code}`,
-      result: [{}]
-    });
-    }
-
+    
+    if (foundCustomers.length === 0) {
+      foundCustomers = [{id: 0, code:'', name: 'agregar'}]
+    };
+    
     res.json({
       ok: true,
       msg: 'Customer geted by code',
