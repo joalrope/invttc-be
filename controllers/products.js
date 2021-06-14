@@ -37,7 +37,7 @@ const Product = require('../models/Product');
  * Method: GET
  * Controller that gets the data for all inventory products.
  */
-const getProducts = async (req = request, res = response) => {
+const getProducts = async (res = response) => {
   try {
     const products = await Product.find();
 
@@ -236,15 +236,15 @@ const getProductById = async (req = request, res = response) => {
 };
 
 const getProductByCode = async (req = request, res = response) => {
-  const code = req.params.code;
+  const code = req.params.code.toUpperCase();
   // const mode = req.header('x-mode');
   // const field = JSON.parse(`{\"${mode}\": 1, \"_id\": 0}`);
 
   try {
     const curProduct = await Product.find(
-      { code: { $regex: `^${code.toUpperCase()}` }, 'details.stock.qty': { $gt: 0 } },
+      { code: { $regex: `^${code}` }, 'details.stock.qty': { $gt: 0 } },
       { _id: 1, code: 1, title: 1 }
-    ).sort({ code: 1 });
+    ).sort({ code: 1 }); 
     /*  const curProduct = await Product.find(
       { code: { $regex: `^${code}` }, 'details.stock.qty': { $gt: 0 } },
       { _id: 1, code: 1, title: 1 }

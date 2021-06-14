@@ -25,7 +25,7 @@ const createCustomer = async (req = request, res = response) => {
   }
 };
 
-const getCustomers = async (req = request, res = response) => {
+const getCustomers = async (res = response) => {
   try {
     const customers = await Customer.find();
     res.json({
@@ -59,7 +59,8 @@ const getCustomerById = async (req = request, res = response) => {
 };
 
 const getCustomerByCode = async (req = request, res = response) => {
-  const code = req.params.code;
+  const code = req.params.code.toUpperCase();
+  
   try {
     let foundCustomers = await Customer.find({ code: { $regex: `^${code}` } }, { _id: 1, code: 1, name: 1 }).limit(
       10
@@ -73,7 +74,7 @@ const getCustomerByCode = async (req = request, res = response) => {
     
     if (foundCustomers.length === 0) {
       foundCustomers = [{id: 0, code:'', name: 'Agregar'}]
-    };
+    }
     
     res.json({
       ok: true,
