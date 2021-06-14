@@ -72,7 +72,7 @@ const getCustomerByCode = async (req = request, res = response) => {
     }
     
     if (foundCustomers.length === 0) {
-      foundCustomers = [{id: 0, code:'', name: 'agregar'}]
+      foundCustomers = [{id: 0, code:'', name: 'Agregar'}]
     };
     
     res.json({

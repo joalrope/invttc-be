@@ -242,9 +242,13 @@ const getProductByCode = async (req = request, res = response) => {
 
   try {
     const curProduct = await Product.find(
+      { code: { $regex: `^${code.toUpperCase()}` }, 'details.stock.qty': { $gt: 0 } },
+      { _id: 1, code: 1, title: 1 }
+    ).sort({ code: 1 });
+    /*  const curProduct = await Product.find(
       { code: { $regex: `^${code}` }, 'details.stock.qty': { $gt: 0 } },
       { _id: 1, code: 1, title: 1 }
-    ).limit(10);
+    ).limit(10); */
     //const curProduct = await Product.find({code: { $regex: `^${code}`}, 'details.trademark': trademark, 'details.stock.location': location, {_id: 1, code: 1, title: 1});
     // const curProduct = await Product.find({code: { $regex: `^${code}`}}, (!!mode) ? field : {});
 

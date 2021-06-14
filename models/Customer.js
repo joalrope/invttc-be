@@ -11,7 +11,7 @@ const CustomerSchema = Schema(
       type: String,
       required: true,
     },
-    isCompany: {
+    isCo: {
       type: Boolean,
     },
     address: {
@@ -23,10 +23,6 @@ const CustomerSchema = Schema(
     },
     email: {
       type: String,
-    },
-    isRegularCustomer: {
-      type: Boolean,
-      default: false,
     },
     contact: [
       {
@@ -50,10 +46,14 @@ const CustomerSchema = Schema(
         },
       },
     ],
+    hasCredit: {
+      type: Boolean,
+      default: false,
+    },
     creditLimit: {
       type: Number,
       required: function () {
-        return this.isClient;
+        return this.hasCredit;
       },
     },
   },
