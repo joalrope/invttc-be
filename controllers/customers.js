@@ -60,22 +60,24 @@ const getCustomerById = async (req = request, res = response) => {
 
 const getCustomerByCode = async (req = request, res = response) => {
   const code = req.params.code.toUpperCase();
-  
+
   try {
-    let foundCustomers = await Customer.find({ code: { $regex: `^${code}` } }, { _id: 1, code: 1, name: 1 }).limit(
-      10
-    );
+    let foundCustomers = await Customer.find(
+      { code: { $regex: `^${code}` } },
+      { _id: 1, code: 1, name: 1 }
+    ).limit(10);
 
     if (foundCustomers.length === 0) {
-      foundCustomers = await Customer.find({ name: { $regex: new RegExp(code, "i")  } }, { _id: 1, code: 1, name: 1 }).limit(
-        10
-      );
+      foundCustomers = await Customer.find(
+        { name: { $regex: new RegExp(code, 'i') } },
+        { _id: 1, code: 1, name: 1 }
+      ).limit(10);
     }
-    
+
     if (foundCustomers.length === 0) {
-      foundCustomers = [{id: 0, code:'', name: 'Agregar'}]
+      foundCustomers = [];
     }
-    
+
     res.json({
       ok: true,
       msg: 'Customer geted by code',
@@ -97,7 +99,11 @@ const updateCustomer = async (req = request, res = response) => {
     }
 
     const newData = { ...req.body };
-    const updatedCustomer = await Customer.findByIdAndUpdate(req.params.id, newData, { new: true });
+    const updatedCustomer = await Customer.findByIdAndUpdate(
+      req.params.id,
+      newData,
+      { new: true }
+    );
 
     res.json({
       ok: true,
