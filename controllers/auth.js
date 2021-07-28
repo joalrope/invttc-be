@@ -92,9 +92,10 @@ const userLogin = async (req = request, res = response) => {
 
 const updateUserRole = async (req = request, res = response) => {
   const { email, role } = req.body;
+  let user;
 
   try {
-    const user = await User.findOne({ email });
+    user = await User.findOne({ email });
 
     // Verificar si existe el usuario
     if (!user) {
@@ -104,7 +105,11 @@ const updateUserRole = async (req = request, res = response) => {
       });
     }
 
-    const updatedUser = await User.findByIdAndUpdate(user.id, { role }, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(
+      user.id,
+      { role },
+      { new: true }
+    );
 
     res.json({
       // '/123456'
@@ -112,7 +117,7 @@ const updateUserRole = async (req = request, res = response) => {
       msg: 'Updated user',
       result: updatedUser,
     });
-  } catch {
+  } catch (error) {
     console.log(error);
     res.status(500).json({
       ok: false,

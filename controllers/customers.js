@@ -3,21 +3,24 @@ const Customer = require('../models/Customer');
 const { msgError } = require('./products');
 
 const createCustomer = async (req = request, res = response) => {
-  const newCustomer = new Customer(req.body);
-  const { code, name } = newCustomer;
+  const { code, name } = req.body;
+
   try {
-    const foundCustomer = await Customer.findOne({ code });
-    if (foundCustomer) {
+    let customer = await Customer.findOne({ code });
+
+    if (customer) {
       return res.status(400).json({
         ok: false,
         msg: `Ya existe el cliente: ${name}`,
+        result: [],
       });
     } else {
-      const savedCustomer = await newCustomer.save();
-      res.json({
+      customer = new Customer(req.body);
+      await customer.save();
+      return res.status(201).json({
         ok: true,
         msg: 'Customer created',
-        result: savedCustomer,
+        result: customer,
       });
     }
   } catch (error) {
