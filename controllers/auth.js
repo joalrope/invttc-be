@@ -10,7 +10,7 @@ const createUser = async (req, res = response) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({
+      return res.json({
         ok: false,
         msg: `Ya existe un usuario con el correo ${email}`,
       });
@@ -36,8 +36,7 @@ const createUser = async (req, res = response) => {
       });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
+    res.json({
       ok: false,
       msg: 'Por favor hable con el administrador',
     });
@@ -52,7 +51,7 @@ const userLogin = async (req = request, res = response) => {
 
     // Verificar si existe el usuario
     if (!user) {
-      return res.status(400).json({
+      return res.json({
         ok: false,
         msg: `El usuario y/o contraseña no son correctos`,
       });
@@ -64,9 +63,9 @@ const userLogin = async (req = request, res = response) => {
     const validPassword = bcrypt.compareSync(password, user.password);
 
     if (!validPassword) {
-      return res.status(400).json({
+      return res.json({
         ok: false,
-        msg: `El usuario y/o contraseña no son correctos`,
+        msg: 'El usuario y/o contraseña no son correctos',
       });
     }
 
