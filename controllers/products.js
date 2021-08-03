@@ -74,7 +74,9 @@ const createProduct = async (req = request, res = response) => {
     const productDB = await Product.findOne({ code });
 
     if (productDB) {
-      const trademarksAvailable = await Product.find({ code }).distinct('details.trademark');
+      const trademarksAvailable = await Product.find({ code }).distinct(
+        'details.trademark'
+      );
 
       if (trademarksAvailable.includes(trademark)) {
         savedProduct = await Product.updateOne(
@@ -89,7 +91,7 @@ const createProduct = async (req = request, res = response) => {
           }
         );
 
-        res.json({
+        res.status(201).json({
           ok: true,
           msg: `Created the new location ${location} of the product with code: ${code}`,
           result: savedProduct,
@@ -104,7 +106,7 @@ const createProduct = async (req = request, res = response) => {
           }
         );
 
-        res.json({
+        res.status(201).json({
           ok: true,
           msg: `The product's ${trademark} trademark was created in the code: ${code}`,
           result: savedProduct,
@@ -113,7 +115,7 @@ const createProduct = async (req = request, res = response) => {
     } else {
       savedProduct = await newProduct.save();
 
-      res.json({
+      res.status(201).json({
         ok: true,
         msg: 'Product created',
         result: savedProduct,
@@ -148,7 +150,11 @@ const updateProduct = async (req = request, res = response) => {
       ...req.body,
     };
 
-    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, newData, { new: true });
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      newData,
+      { new: true }
+    );
 
     res.json({
       // '/123456'
@@ -176,7 +182,12 @@ const updateQtyProduct = async (req = request, res = response) => {
     const updatedQty = await Product.updateOne(
       { code },
       { $inc: { 'details.$[det].stock.$[loc].qty': qty } },
-      { arrayFilters: [{ 'det.trademark': trademark }, { 'loc.location': location }] }
+      {
+        arrayFilters: [
+          { 'det.trademark': trademark },
+          { 'loc.location': location },
+        ],
+      }
     );
 
     res.json({
@@ -244,7 +255,7 @@ const getProductByCode = async (req = request, res = response) => {
     const curProduct = await Product.find(
       { code: { $regex: `^${code}` }, 'details.stock.qty': { $gt: 0 } },
       { _id: 1, code: 1, title: 1 }
-    ).sort({ code: 1 }); 
+    ).sort({ code: 1 });
     /*  const curProduct = await Product.find(
       { code: { $regex: `^${code}` }, 'details.stock.qty': { $gt: 0 } },
       { _id: 1, code: 1, title: 1 }
