@@ -1,5 +1,5 @@
 {
-  "name": "backend-invtc",
+  "name": "tractocenter-app",
   "version": "1.0.0",
   "description": "APIRest de la aplicación del inventario de tractocenter",
   "main": "index.js",
