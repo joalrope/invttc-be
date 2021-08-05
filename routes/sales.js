@@ -2,7 +2,14 @@ const router = require('express').Router();
 const { check } = require('express-validator');
 const { fieldsValidator } = require('../middlewares/fields-validator');
 const { jwtValidator } = require('../middlewares/jwt-validator');
-const { getSales, createSale, updateSale, deleteSale, getSaleById, getSaleByCode } = require('../controllers/Sales');
+const {
+  getSales,
+  createSale,
+  updateSale,
+  deleteSale,
+  getSaleById,
+  getSaleByCode,
+} = require('../controllers/sales');
 const { allowAccessTo } = require('../middlewares/allow-access-to');
 const { createReg, updateReg, deleteReg } = require('../helper/roles');
 /*
@@ -21,9 +28,13 @@ router.post(
   '/',
   [
     allowAccessTo(createReg),
-    check('invoiceId').exists().withMessage('El Codigo de factura es Obligatorio'),
+    check('invoiceId')
+      .exists()
+      .withMessage('El Codigo de factura es Obligatorio'),
     check('date').exists().withMessage('La Fecha es Obligatoria'),
-    check('customer').exists().withMessage('Los Datos del comprador son Obligatorios'),
+    check('customer')
+      .exists()
+      .withMessage('Los Datos del comprador son Obligatorios'),
     fieldsValidator,
   ],
   createSale
