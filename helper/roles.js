@@ -1,22 +1,38 @@
-const Roles = Object.freeze({
-  Basic: 'basic',
-  Freelance: 'freelance',
-  Storer: 'storer',
-  StorerChief: 'storer-chief',
-  Seller: 'seller',
-  Admin: 'admin',
-  StoreManager: 'store-manager',
-  Owner: 'owner',
-  Developer: 'developer',
+const roles = Object.freeze({
+  basic: 'basic',
+  freelance: 'freelance',
+  storer: 'storer',
+  storerChief: 'storer-chief',
+  seller: 'seller',
+  admin: 'admin',
+  storeManager: 'store-manager',
+  owner: 'owner',
+  developer: 'developer',
 });
 
-const createReg = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin, Roles.Developer]; // Crear o agregar Nuevos Productos
-const updateReg = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin]; // Modificar Productos
-const deleteReg = [Roles.Storer, Roles.StorerChief, Roles.StoreManager, Roles.Admin]; // Eliminar Productos
-const updateRol = [Roles.StoreManager, Roles.Admin, Roles.Owner]; // Modificar rol del usuario
+const createReg = [
+  roles.storer,
+  roles.storerChief,
+  roles.storeManager,
+  roles.admin,
+  roles.developer,
+]; // Crear o agregar Nuevos Productos
+const updateReg = [
+  roles.storer,
+  roles.storerChief,
+  roles.storeManager,
+  roles.admin,
+]; // Modificar Productos
+const deleteReg = [
+  roles.storer,
+  roles.storerChief,
+  roles.storeManager,
+  roles.admin,
+]; // Eliminar Productos
+const updateRol = [roles.storeManager, roles.admin, roles.owner]; // Modificar rol del usuario
 
 module.exports = {
-  Roles,
+  Roles: roles,
   createReg,
   updateReg,
   deleteReg,

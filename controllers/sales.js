@@ -3,6 +3,7 @@ const Sale = require('../models/Sale');
 const { msgError } = require('./products');
 
 const getSales = async (req = request, res = response) => {
+  console.log(req);
   try {
     const sales = await Sale.find();
 
@@ -17,15 +18,18 @@ const getSales = async (req = request, res = response) => {
 };
 
 const createSale = async (req = request, res = response) => {
+  console.log(req.body);
   const newSale = new Sale(req.body);
-  const { InvoiceId, customer } = newSale;
+  const { invoiceId, customer } = newSale;
+  console.log(newSale);
 
   try {
-    const curSale = await Sale.findOne({ InvoiceId });
+    const curSale = await Sale.findOne({ invoiceId });
+    console.log('VENTA ACTUAL:', curSale);
     if (curSale) {
       return res.status(400).json({
         ok: false,
-        msg: `Ya existe la Venta: ${InvoiceId} al cliente ${customer.name}`,
+        msg: `Ya existe la Venta: ${invoiceId} al cliente ${customer.name}`,
       });
     } else {
       const savedSale = await newSale.save();
@@ -50,7 +54,9 @@ const updateSale = async (req = request, res = response) => {
       });
     }
     const newData = { ...req.body };
-    const updatedSale = await Sale.findByIdAndUpdate(req.params.id, newData, { new: true });
+    const updatedSale = await Sale.findByIdAndUpdate(req.params.id, newData, {
+      new: true,
+    });
     res.json({
       ok: true,
       msg: 'Updated sale',
@@ -102,7 +108,10 @@ const getSaleById = async (req = request, res = response) => {
 const getSaleByCode = async (req = request, res = response) => {
   const code = req.params.code;
   try {
-    const curSale = await Sale.find({ code: { $regex: `^${code}` } }, { _id: 1, code: 1, customer: 1 }).limit(10);
+    const curSale = await Sale.find(
+      { code: { $regex: `^${code}` } },
+      { _id: 1, code: 1, customer: 1 }
+    ).limit(10);
     if (!curSale) {
       return res.status(404).json({
         ok: false,

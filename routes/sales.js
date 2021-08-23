@@ -28,7 +28,7 @@ router.post(
   '/',
   [
     allowAccessTo(createReg),
-    check('invoiceId')
+    check('invoiceNumber')
       .exists()
       .withMessage('El Codigo de factura es Obligatorio'),
     check('date').exists().withMessage('La Fecha es Obligatoria'),

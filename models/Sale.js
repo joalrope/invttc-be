@@ -2,13 +2,13 @@ const { Schema, model } = require('mongoose');
 
 const SaleSchema = Schema(
   {
-    invoiceId: {
+    invoiceNumber: {
       type: String,
       required: true,
       unique: true,
     },
     date: {
-      type: Date,
+      type: String,
       required: true,
     },
     coin: {
@@ -31,6 +31,10 @@ const SaleSchema = Schema(
           required: true,
         },
         title: {
+          type: String,
+          required: true,
+        },
+        trademark: {
           type: String,
           required: true,
         },
@@ -95,7 +99,7 @@ const SaleSchema = Schema(
         default: false,
       },
       paymentDate: {
-        type: Date,
+        type: String,
       },
     },
   },

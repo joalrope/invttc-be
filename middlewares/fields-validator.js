@@ -20,7 +20,7 @@ const fieldsValidator = (req, res = response, next) => {
     }
 
     const msgErrors = errors.map((error) => {
-      return `${!!preMsg ? preMsg : ''} ${error.params} ${error.msg}`;
+      return `${preMsg ? preMsg : ''} ${error.params} ${error.msg}`;
     });
 
     return res.status(400).json({
