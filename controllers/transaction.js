@@ -2,7 +2,7 @@ const { request, response } = require('express');
 const Transaction = require('../models/Transaction');
 const { padLeft } = require('../helper/padLeft');
 
-const getNextNumberTransaction = async (req = request, res = response) => {
+const getTransactionInfo = async (req = request, res = response) => {
   try {
     const transaction = await Transaction.find({}, { lastTransaction: 1 });
 
@@ -10,19 +10,27 @@ const getNextNumberTransaction = async (req = request, res = response) => {
       let { lastTransaction } = transaction[0];
       const curDate = new Date();
 
-      const nextNumberTransaction = `${curDate.getFullYear().toString().slice(-2)}${padLeft(
-        curDate.getMonth() + 1,
-        2
-      )}-${padLeft(lastTransaction + 1, 4)}`;
+      const controlNumber = `${curDate
+        .getFullYear()
+        .toString()
+        .slice(-2)}${padLeft(curDate.getMonth() + 1, 2)}-${padLeft(
+        lastTransaction + 1,
+        4
+      )}`;
 
-      const [result] = await Transaction.find({ 'taxes.title': 'IVA' }, { taxes: 1, _id: 0 });
+      const [result] = await Transaction.find(
+        { 'taxes.title': 'IVA' },
+        { taxes: 1, _id: 0 }
+      );
       const { taxes } = result;
       const { rate } = taxes[0];
 
+      console.log(controlNumber, rate);
+
       res.json({
         ok: true,
-        msg: 'last Transaction',
-        result: { nextNumberTransaction, ivaTax: rate },
+        msg: 'Current transaction',
+        result: { controlNumber, ivaTax: rate },
       });
     }
   } catch (error) {
@@ -30,7 +38,7 @@ const getNextNumberTransaction = async (req = request, res = response) => {
   }
 };
 
-const updateNumberTransaction = async (req = request, res = response) => {
+const updateTransactionInfo = async (req = request, res = response) => {
   try {
     await Transaction.updateOne({}, { $inc: { lastTransaction: 1 } });
 
@@ -73,6 +81,6 @@ const msgError = (res, err) => {
 
 module.exports = {
   createTransaction,
-  getNextNumberTransaction,
-  updateNumberTransaction,
+  getTransactionInfo,
+  updateTransactionInfo,
 };

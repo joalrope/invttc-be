@@ -18,18 +18,17 @@ const getSales = async (req = request, res = response) => {
 };
 
 const createSale = async (req = request, res = response) => {
-  console.log(req.body);
   const newSale = new Sale(req.body);
-  const { invoiceId, customer } = newSale;
-  console.log(newSale);
+  const { invoiceNumber, customer } = newSale;
+
+  console.log(invoiceNumber);
 
   try {
-    const curSale = await Sale.findOne({ invoiceId });
-    console.log('VENTA ACTUAL:', curSale);
+    const curSale = await Sale.findOne({ invoiceNumber });
     if (curSale) {
       return res.status(400).json({
         ok: false,
-        msg: `Ya existe la Venta: ${invoiceId} al cliente ${customer.name}`,
+        msg: `Ya existe la Venta: ${invoiceNumber} al cliente ${customer.name}`,
       });
     } else {
       const savedSale = await newSale.save();
