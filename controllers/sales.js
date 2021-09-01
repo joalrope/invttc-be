@@ -21,8 +21,6 @@ const createSale = async (req = request, res = response) => {
   const newSale = new Sale(req.body);
   const { invoiceNumber, customer } = newSale;
 
-  console.log(invoiceNumber);
-
   try {
     const curSale = await Sale.findOne({ invoiceNumber });
     if (curSale) {

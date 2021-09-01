@@ -25,8 +25,6 @@ const getTransactionInfo = async (req = request, res = response) => {
       const { taxes } = result;
       const { rate } = taxes[0];
 
-      console.log(controlNumber, rate);
-
       res.json({
         ok: true,
         msg: 'Current transaction',
