@@ -4,6 +4,7 @@ const { fieldsValidator } = require('../middlewares/fields-validator');
 const { jwtValidator } = require('../middlewares/jwt-validator');
 const {
   getProducts,
+  getProductsByCodeRegex,
   getProductByCode,
   getProductById,
   createProduct,
@@ -45,7 +46,10 @@ router.put('/:id', allowAccessTo(updateReg), updateProduct);
 //Eliminar un Producto
 router.delete('/:id', allowAccessTo(deleteReg), deleteProduct);
 
-//Obtener un Producto mediante Code
+//Obtener los productos cuyo código coincida con la expresion regular
+router.get('/regex/:code', getProductsByCodeRegex);
+
+//Obtener un Productos cuya expresion regular coincida con Code
 router.get('/code/:code', getProductByCode);
 
 // Actualizar la cantidad de un Producto mediante Id

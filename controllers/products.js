@@ -248,6 +248,33 @@ const getProductById = async (req = request, res = response) => {
 
 const getProductByCode = async (req = request, res = response) => {
   const code = req.params.code.toUpperCase();
+  try {
+    const curProduct = await Product.find({ code });
+    console.log(curProduct);
+
+    if (curProduct.length < 1) {
+      return res.status(404).json({
+        ok: false,
+        msg: `There is no product with id: ${code}`,
+        result: {},
+      });
+    }
+
+    if (curProduct[0] === 'undefined') curProduct[0] = {};
+
+    res.json({
+      // '/123456'
+      ok: true,
+      msg: 'Product geted by code',
+      result: curProduct[0],
+    });
+  } catch (error) {
+    msgError(res, error);
+  }
+};
+
+const getProductsByCodeRegex = async (req = request, res = response) => {
+  const code = req.params.code.toUpperCase();
   // const mode = req.header('x-mode');
   // const field = JSON.parse(`{\"${mode}\": 1, \"_id\": 0}`);
 
@@ -272,7 +299,7 @@ const getProductByCode = async (req = request, res = response) => {
 
     res.json({
       ok: true,
-      msg: 'Product geted by code',
+      msg: 'Product geted by code regex',
       result: curProduct,
     });
   } catch (error) {
@@ -293,6 +320,7 @@ module.exports = {
   deleteProduct,
   getProducts,
   getProductById,
+  getProductsByCodeRegex,
   getProductByCode,
   updateProduct,
   updateQtyProduct,
