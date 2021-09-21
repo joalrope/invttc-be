@@ -250,7 +250,6 @@ const getProductByCode = async (req = request, res = response) => {
   const code = req.params.code.toUpperCase();
   try {
     const curProduct = await Product.find({ code });
-    console.log(curProduct);
 
     if (curProduct.length < 1) {
       return res.status(404).json({

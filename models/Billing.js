@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose');
 
-const TransactionSchema = Schema(
+const BillingSchema = Schema(
   {
-    lastTransaction: {
+    lastBilling: {
       type: Number,
     },
     taxes: [
@@ -23,10 +23,10 @@ const TransactionSchema = Schema(
   }
 );
 
-TransactionSchema.method('toJSON', function () {
+BillingSchema.method('toJSON', function () {
   const { __v, _id, ...object } = this.toObject();
   const id = _id;
   return { id, ...object };
 });
 
-module.exports = model('Transaction', TransactionSchema);
+module.exports = model('Billing', BillingSchema);

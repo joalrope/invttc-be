@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const InvoiceSchema = Schema(
   {
-    transaction: {
+    billing: {
       invoiceNumber: {},
       date: {},
       customerName: {},

@@ -11,9 +11,7 @@ const permits = (req, res, next) => {
 
     if (token) role = parseJwt(token);
 
-    console.log('role:', role);
     if (!role === 'basic') {
-      console.log('POST happen', role);
       next();
     }
     next();
