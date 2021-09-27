@@ -19,6 +19,9 @@ const { createReg, updateReg, deleteReg } = require('../helper/roles');
     host + api/products
 */
 
+//Obtener un Productos cuya expresion regular coincida con Code
+router.get('/code/:code', getProductByCode);
+
 //Todas las rutas deben pasar por la Validacion del Token
 router.use(jwtValidator);
 
@@ -48,9 +51,6 @@ router.delete('/:id', allowAccessTo(deleteReg), deleteProduct);
 
 //Obtener los productos cuyo código coincida con la expresion regular
 router.get('/regex/:code', getProductsByCodeRegex);
-
-//Obtener un Productos cuya expresion regular coincida con Code
-router.get('/code/:code', getProductByCode);
 
 // Actualizar la cantidad de un Producto mediante Id
 router.put('/qty/:id', updateQtyProduct);

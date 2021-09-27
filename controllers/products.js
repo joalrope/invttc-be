@@ -225,20 +225,21 @@ const deleteProduct = async (req = request, res = response) => {
 };
 
 const getProductById = async (req = request, res = response) => {
+  const { id } = req.params;
   try {
-    const curProduct = await Product.findById(req.params.id);
+    const curProduct = await Product.findById(id);
 
     if (!curProduct) {
       return res.status(404).json({
         ok: false,
-        msg: `There is no product with id: ${req.params.id}`,
+        msg: `There is no product with id: ${id}`,
       });
     }
 
     res.json({
       // '/123456'
       ok: true,
-      msg: 'Product geted by id',
+      msg: 'Product got by id',
       result: curProduct,
     });
   } catch (error) {
