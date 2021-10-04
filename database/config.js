@@ -5,10 +5,10 @@ const dbConnection = async () => {
     await mongoose.connect(process.env.DB_CNN, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true,
+      /*  useCreateIndex: true, */
     });
 
-    mongoose.set('useFindAndModify', false);
+    /* mongoose.set('useFindAndModify', false); */
     console.log('DB Online');
   } catch (error) {
     console.log(error);

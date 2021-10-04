@@ -37,7 +37,7 @@ const Product = require('../models/Product');
  * Method: GET
  * Controller that gets the data for all inventory products.
  */
-const getProducts = async (res = response) => {
+const getProducts = async (req = request, res = response) => {
   try {
     const products = await Product.find();
 

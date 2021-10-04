@@ -22,6 +22,7 @@ const updateReg = [
   roles.storerChief,
   roles.storeManager,
   roles.admin,
+  roles.developer,
 ]; // Modificar Productos
 const deleteReg = [
   roles.storer,

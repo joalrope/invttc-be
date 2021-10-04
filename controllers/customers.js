@@ -28,14 +28,17 @@ const createCustomer = async (req = request, res = response) => {
   }
 };
 
-const getCustomers = async (res = response) => {
+const getCustomers = async (req = request, res = response) => {
   try {
     const customers = await Customer.find();
-    res.json({
-      ok: true,
-      msg: 'Get customers',
-      result: customers,
-    });
+
+    if (customers) {
+      res.json({
+        ok: true,
+        msg: 'Get customers',
+        result: customers,
+      });
+    }
   } catch (error) {
     msgError(res, error);
   }
