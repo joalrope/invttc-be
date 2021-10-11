@@ -41,7 +41,7 @@ const getProducts = async (req = request, res = response) => {
   try {
     const products = await Product.find();
 
-    res.json({
+    res.status(200).json({
       ok: true,
       msg: 'Get products',
       result: products,
