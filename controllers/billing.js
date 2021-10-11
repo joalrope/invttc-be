@@ -25,7 +25,7 @@ const getBillingInfo = async (req = request, res = response) => {
       const { taxes } = result;
       const { rate } = taxes[0];
 
-      res.json({
+      res.status(201).json({
         ok: true,
         msg: 'Current billing',
         result: { controlNumber, ivaTax: rate },
@@ -44,7 +44,7 @@ const updateBillingInfo = async (req = request, res = response) => {
 
     const { lastBilling } = billing[0];
 
-    res.json({
+    res.status(201).json({
       ok: true,
       msg: 'next Billing',
       result: lastBilling,
@@ -59,7 +59,7 @@ const createBilling = async (req = request, res = response) => {
 
   try {
     const savedBilling = await newBilling.save();
-    res.json({
+    res.status(201).json({
       ok: true,
       msg: 'Billing created',
       result: savedBilling,

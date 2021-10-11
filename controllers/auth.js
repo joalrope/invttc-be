@@ -10,7 +10,7 @@ const createUser = async (req, res = response) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      return res.json({
+      return res.status(200).json({
         ok: false,
         msg: `Ya existe un usuario con el correo ${email}`,
       });
@@ -36,7 +36,7 @@ const createUser = async (req, res = response) => {
       });
     }
   } catch (error) {
-    res.json({
+    res.status(500).json({
       ok: false,
       msg: 'Por favor hable con el administrador',
     });
@@ -51,7 +51,7 @@ const userLogin = async (req = request, res = response) => {
 
     // Verificar si existe el usuario
     if (!user) {
-      return res.json({
+      return res.status(200).json({
         ok: false,
         msg: `El usuario y/o contraseña no son correctos`,
       });
@@ -63,7 +63,7 @@ const userLogin = async (req = request, res = response) => {
     const validPassword = bcrypt.compareSync(password, user.password);
 
     if (!validPassword) {
-      return res.json({
+      return res.status(200).json({
         ok: false,
         msg: 'El usuario y/o contraseña no son correctos',
       });
@@ -110,7 +110,7 @@ const updateUserRole = async (req = request, res = response) => {
       { new: true }
     );
 
-    res.json({
+    res.status(500).json({
       // '/123456'
       ok: true,
       msg: 'Updated user',
@@ -130,7 +130,7 @@ const revalidateToken = async (req, res = response) => {
 
   const token = await generateJWT(uid, name, role);
 
-  res.json({
+  res.status(500).json({
     ok: true,
     msg: 'Nuevo token',
     uid,

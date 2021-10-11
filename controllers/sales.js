@@ -7,7 +7,7 @@ const getSales = async (req = request, res = response) => {
   try {
     const sales = await Sale.find();
 
-    res.json({
+    res.status(200).json({
       ok: true,
       msg: 'Get sales',
       result: sales,
@@ -30,7 +30,7 @@ const createSale = async (req = request, res = response) => {
       });
     } else {
       const savedSale = await newSale.save();
-      res.json({
+      res.status(201).json({
         ok: true,
         msg: 'Sale created',
         result: savedSale,
@@ -54,7 +54,7 @@ const updateSale = async (req = request, res = response) => {
     const updatedSale = await Sale.findByIdAndUpdate(req.params.id, newData, {
       new: true,
     });
-    res.json({
+    res.status(201).json({
       ok: true,
       msg: 'Updated sale',
       result: updatedSale,
@@ -74,7 +74,7 @@ const deleteSale = async (req = request, res = response) => {
       });
     }
     await Sale.findByIdAndDelete(req.params.id);
-    res.json({
+    res.status(201).json({
       ok: true,
       msg: 'sale removed',
     });
@@ -92,7 +92,7 @@ const getSaleById = async (req = request, res = response) => {
         msg: `There is no sale with id: ${req.params.id}`,
       });
     }
-    res.json({
+    res.status(201).json({
       ok: true,
       msg: 'Sale geted by id',
       result: curSale,
@@ -115,7 +115,7 @@ const getSaleByCode = async (req = request, res = response) => {
         msg: `There is no sale with code: ${code}`,
       });
     }
-    res.json({
+    res.status(200).json({
       ok: true,
       msg: 'Sale geted by code',
       result: curSale,

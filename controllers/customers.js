@@ -33,7 +33,7 @@ const getCustomers = async (req = request, res = response) => {
     const customers = await Customer.find();
 
     if (customers) {
-      res.json({
+      res.status(200).json({
         ok: true,
         msg: 'Get customers',
         result: customers,
@@ -54,7 +54,7 @@ const getCustomerById = async (req = request, res = response) => {
       });
     }
 
-    res.json({
+    res.status(200).json({
       ok: true,
       msg: 'Customer geted by id',
       result: foundCustomer,
@@ -84,7 +84,7 @@ const getCustomerByCode = async (req = request, res = response) => {
       foundCustomers = [];
     }
 
-    res.json({
+    res.status(200).json({
       ok: true,
       msg: 'Customer geted by code',
       result: foundCustomers,
@@ -111,7 +111,7 @@ const updateCustomer = async (req = request, res = response) => {
       { new: true }
     );
 
-    res.json({
+    res.status(200).json({
       ok: true,
       msg: 'Updated customer',
       result: updatedCustomer,
@@ -132,7 +132,7 @@ const deleteCustomer = async (req = request, res = response) => {
     }
 
     await Customer.findByIdAndDelete(req.params.id);
-    res.json({
+    res.status(200).json({
       ok: true,
       msg: `customer ${foundCustomer.name} removed`,
     });

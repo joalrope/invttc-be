@@ -156,7 +156,7 @@ const updateProduct = async (req = request, res = response) => {
       { new: true }
     );
 
-    res.json({
+    res.status(200).json({
       // '/123456'
       ok: true,
       msg: 'Updated product',
@@ -190,7 +190,7 @@ const updateQtyProduct = async (req = request, res = response) => {
       }
     );
 
-    res.json({
+    res.status(201).json({
       // '/123456'
       ok: true,
       msg: 'Updated product quantity',
@@ -214,7 +214,7 @@ const deleteProduct = async (req = request, res = response) => {
 
     await Product.findByIdAndDelete(req.params.id);
 
-    res.json({
+    res.status(201).json({
       // '/123456'
       ok: true,
       msg: 'product removed',
@@ -236,7 +236,7 @@ const getProductById = async (req = request, res = response) => {
       });
     }
 
-    res.json({
+    res.status(200).json({
       // '/123456'
       ok: true,
       msg: 'Product got by id',
@@ -262,7 +262,7 @@ const getProductByCode = async (req = request, res = response) => {
 
     if (curProduct[0] === 'undefined') curProduct[0] = {};
 
-    res.json({
+    res.status(201).json({
       // '/123456'
       ok: true,
       msg: 'Product geted by code',
@@ -297,7 +297,7 @@ const getProductsByCodeRegex = async (req = request, res = response) => {
       });
     }
 
-    res.json({
+    res.status(200).json({
       ok: true,
       msg: 'Product geted by code regex',
       result: curProduct,
