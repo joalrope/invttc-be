@@ -14,10 +14,11 @@ app.use(express.json()); // Lectura y parseo del body
 //app.use(permits());
 
 app.use('/api/auth', require('./routes/auth')); // Rutas
-app.use('/api/products', require('./routes/products'));
+app.use('/api/billings', require('./routes/billings'));
 app.use('/api/customers', require('./routes/customers'));
+app.use('/api/products', require('./routes/products'));
 app.use('/api/sales', require('./routes/sales'));
-app.use('/api/billing', require('./routes/billing'));
+app.use('/api/trademarks', require('./routes/trademarks'));
 app.use('/', require('./routes/app'));
 
 app.listen(process.env.PORT, () => {

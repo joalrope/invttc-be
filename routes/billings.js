@@ -4,7 +4,7 @@ const {
   createBilling,
   getBillingInfo,
   updateBillingInfo,
-} = require('../controllers/billing');
+} = require('../controllers/billings');
 
 router.use(jwtValidator);
 router.post('/', createBilling);

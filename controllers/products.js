@@ -70,6 +70,8 @@ const createProduct = async (req = request, res = response) => {
   const { location } = stock[0];
   let savedProduct;
 
+  console.log(newProduct);
+
   try {
     const productDB = await Product.findOne({ code });
 
@@ -249,6 +251,7 @@ const getProductById = async (req = request, res = response) => {
 
 const getProductByCode = async (req = request, res = response) => {
   const code = req.params.code.toUpperCase();
+
   try {
     const curProduct = await Product.find({ code });
 
