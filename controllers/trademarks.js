@@ -2,8 +2,30 @@ const { request, response } = require('express');
 const Trademark = require('../models/Trademark');
 const { msgError } = require('./products');
 
-const createTrademark = () => {
-  return {};
+const createTrademark = async (req = request, res = response) => {
+  const { code, title } = req.body;
+
+  try {
+    let trademark = await Trademark.findOne({ code });
+
+    if (trademark) {
+      return res.status(400).json({
+        ok: false,
+        msg: `Ya existe una marca: ${title}`,
+        result: [],
+      });
+    } else {
+      trademark = new Trademark(req.body);
+      await trademark.save();
+      return res.status(201).json({
+        ok: true,
+        msg: 'Trademark created',
+        result: trademark,
+      });
+    }
+  } catch (error) {
+    msgError(res, error);
+  }
 };
 
 const getTrademarks = async (req = request, res = response) => {
