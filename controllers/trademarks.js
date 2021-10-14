@@ -71,7 +71,7 @@ const updateTrademark = async (req = request, res = response) => {
   }
 };
 
-const deleteTrademark = (req = request, res = response) => {
+const deleteTrademark = async (req = request, res = response) => {
   const id = req.params.id;
 
   try {
