@@ -29,6 +29,7 @@ const deleteReg = [
   roles.storerChief,
   roles.storeManager,
   roles.admin,
+  roles.developer,
 ]; // Eliminar Productos
 const updateRol = [roles.storeManager, roles.admin, roles.owner]; // Modificar rol del usuario
 

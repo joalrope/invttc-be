@@ -60,6 +60,24 @@ const getTrademarksTitle = async (req = request, res = response) => {
   }
 };
 
+const getTrademarkFactorByCode = async (req = request, res = response) => {
+  const code = req.params.code;
+
+  try {
+    const [curTrademark] = await Trademark.find({ code });
+    const { factor } = curTrademark;
+
+    res.status(201).json({
+      // '/123456'
+      ok: true,
+      msg: 'Factor geted by code',
+      result: factor,
+    });
+  } catch (error) {
+    msgError(res, error);
+  }
+};
+
 const updateTrademark = async (req = request, res = response) => {
   const newTrademark = req.body;
   const id = req.params.id;
@@ -124,4 +142,5 @@ module.exports = {
   getTrademarksTitle,
   updateTrademark,
   deleteTrademark,
+  getTrademarkFactorByCode,
 };

@@ -5,6 +5,7 @@ const { jwtValidator } = require('../middlewares/jwt-validator');
 const {
   getTrademarks,
   getTrademarksTitle,
+  getTrademarkFactorByCode,
   createTrademark,
   updateTrademark,
   deleteTrademark,
@@ -25,6 +26,9 @@ router.get('/', getTrademarks);
 
 //Obtener solo el titulo de las marcas
 router.get('/title', getTrademarksTitle);
+
+//Obtener factor de una marca dado el código
+router.get('/factor/:code', getTrademarkFactorByCode);
 
 //Crear una nueva Marca
 router.post(
