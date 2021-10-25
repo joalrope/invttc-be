@@ -44,7 +44,11 @@ const getTrademarks = async (req = request, res = response) => {
 
 const getTrademarksTitle = async (req = request, res = response) => {
   try {
-    const trademars = await Trademark.find({}, { _id: 0, title: 1 });
+    const trademars = await Trademark.find(
+      {},
+      { _id: 0, title: 1 },
+      { sort: { title: 1 } }
+    );
 
     const titles = trademars.map(({ title }) => {
       return title;
