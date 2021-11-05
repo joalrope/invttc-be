@@ -2,7 +2,6 @@ const { response } = require('express');
 const { validationResult } = require('express-validator');
 
 const fieldsValidator = (req, res = response, next) => {
-  //Manejo de errores
   const valResult = validationResult.withDefaults({
     formatter: (error) => {
       return {
@@ -15,17 +14,19 @@ const fieldsValidator = (req, res = response, next) => {
   const errors = valResult(req).array();
 
   if (!(Object.entries(errors).length === 0)) {
+    let preMsg = '';
     if (Object.entries(errors).length > 1) {
-      var preMsg = 'Ocurrieron los siguientes errores:';
+      preMsg = 'Ocurrieron los siguientes errores: ';
     }
 
     const msgErrors = errors.map((error) => {
-      return `${preMsg ? preMsg : ''} ${error.params} ${error.msg}`;
+      return `${error.params} ${error.msg}`;
     });
+    const msg = `${preMsg}${msgErrors.join(' y ')}`;
 
-    return res.status(400).json({
+    return res.json({
       ok: false,
-      msg: msgErrors.join(),
+      msg,
     });
   }
 
