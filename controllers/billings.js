@@ -32,7 +32,7 @@ const getBillingInfo = async (req = request, res = response) => {
       });
     }
   } catch (error) {
-    msgError(res, error);
+    msgError(req, error);
   }
 };
 
@@ -50,7 +50,7 @@ const updateBillingInfo = async (req = request, res = response) => {
       result: lastBilling,
     });
   } catch (error) {
-    msgError(res, error);
+    msgError(req, error);
   }
 };
 

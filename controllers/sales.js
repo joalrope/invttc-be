@@ -94,7 +94,7 @@ const getSaleById = async (req = request, res = response) => {
     }
     res.status(201).json({
       ok: true,
-      msg: 'Sale geted by id',
+      msg: 'Sale got by id',
       result: curSale,
     });
   } catch (error) {
@@ -117,7 +117,7 @@ const getSaleByCode = async (req = request, res = response) => {
     }
     res.status(200).json({
       ok: true,
-      msg: 'Sale geted by code',
+      msg: 'Sale got by code',
       result: curSale,
     });
   } catch (error) {

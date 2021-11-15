@@ -38,7 +38,7 @@ const getTrademarks = async (req = request, res = response) => {
       result: trademarks,
     });
   } catch (error) {
-    msgError(res, error);
+    msgError(req, error);
   }
 };
 
@@ -60,7 +60,7 @@ const getTrademarksTitle = async (req = request, res = response) => {
       result: titles,
     });
   } catch (error) {
-    msgError(res, error);
+    msgError(req, error);
   }
 };
 
@@ -74,7 +74,7 @@ const getTrademarkFactorByCode = async (req = request, res = response) => {
     res.status(201).json({
       // '/123456'
       ok: true,
-      msg: 'Factor geted by code',
+      msg: 'Factor got by code',
       result: factor,
     });
   } catch (error) {

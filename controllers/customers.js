@@ -40,7 +40,7 @@ const getCustomers = async (req = request, res = response) => {
       });
     }
   } catch (error) {
-    msgError(res, error);
+    msgError(req, error);
   }
 };
 
@@ -56,7 +56,7 @@ const getCustomerById = async (req = request, res = response) => {
 
     res.status(200).json({
       ok: true,
-      msg: 'Customer geted by id',
+      msg: 'Customer got by id',
       result: foundCustomer,
     });
   } catch (error) {
@@ -86,7 +86,7 @@ const getCustomerByCode = async (req = request, res = response) => {
 
     res.status(200).json({
       ok: true,
-      msg: 'Customer geted by code',
+      msg: 'Customer got by code',
       result: foundCustomers,
     });
   } catch (error) {

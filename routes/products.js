@@ -7,6 +7,7 @@ const {
   getProductsByCodeRegex,
   getProductByCode,
   getProductById,
+  getProductsStock,
   createProduct,
   updateProduct,
   updateQtyProduct,
@@ -22,10 +23,13 @@ const { createReg, updateReg, deleteReg } = require('../helper/roles');
 //Obtener un Productos cuya expresion regular coincida con Code
 router.get('/code/:code', getProductByCode);
 
+// Obtener la locacion con menor cantidad de un Producto mediante el código
+router.get('/location/:code', getProductsStock);
+
 //Todas las rutas deben pasar por la Validacion del Token
 router.use(jwtValidator);
 
-//Obtener eventos
+//Obtener productos
 router.get('/', getProducts);
 
 //Crear un nuevo producto

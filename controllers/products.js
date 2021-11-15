@@ -1,5 +1,6 @@
 const { request, response } = require('express');
 const Product = require('../models/Product');
+//const { objectMin } = require('../helper/object-with-max-value');
 // const {Roles} = require('../helper/roles');
 
 /**
@@ -47,7 +48,7 @@ const getProducts = async (req = request, res = response) => {
       result: products,
     });
   } catch (error) {
-    msgError(res, error);
+    msgError(req, error);
   }
 };
 
@@ -69,8 +70,6 @@ const createProduct = async (req = request, res = response) => {
   const { trademark, stock } = details[0];
   const { location } = stock[0];
   let savedProduct;
-
-  console.log(newProduct);
 
   try {
     const productDB = await Product.findOne({ code });
@@ -268,7 +267,7 @@ const getProductByCode = async (req = request, res = response) => {
     res.status(201).json({
       // '/123456'
       ok: true,
-      msg: 'Product geted by code',
+      msg: 'Product got by code',
       result: curProduct[0],
     });
   } catch (error) {
@@ -278,20 +277,12 @@ const getProductByCode = async (req = request, res = response) => {
 
 const getProductsByCodeRegex = async (req = request, res = response) => {
   const code = req.params.code.toUpperCase();
-  // const mode = req.header('x-mode');
-  // const field = JSON.parse(`{\"${mode}\": 1, \"_id\": 0}`);
 
   try {
     const curProduct = await Product.find(
       { code: { $regex: `^${code}` }, 'details.stock.qty': { $gt: 0 } },
       { _id: 1, code: 1, title: 1 }
     ).sort({ code: 1 });
-    /*  const curProduct = await Product.find(
-      { code: { $regex: `^${code}` }, 'details.stock.qty': { $gt: 0 } },
-      { _id: 1, code: 1, title: 1 }
-    ).limit(10); */
-    //const curProduct = await Product.find({code: { $regex: `^${code}`}, 'details.trademark': trademark, 'details.stock.location': location, {_id: 1, code: 1, title: 1});
-    // const curProduct = await Product.find({code: { $regex: `^${code}`}}, (!!mode) ? field : {});
 
     if (!curProduct) {
       return res.status(404).json({
@@ -302,8 +293,36 @@ const getProductsByCodeRegex = async (req = request, res = response) => {
 
     res.status(200).json({
       ok: true,
-      msg: 'Product geted by code regex',
+      msg: 'Product got by code regex',
       result: curProduct,
+    });
+  } catch (error) {
+    msgError(res, error);
+  }
+};
+
+const getProductsStock = async (req = request, res = response) => {
+  const code = req.params.code.toUpperCase();
+
+  try {
+    const stockAvailable = await Product.find({ code }).distinct(
+      'details.stock.location'
+    );
+
+    if (stockAvailable.length < 1) {
+      return res.status(404).json({
+        ok: false,
+        msg: `There is no product with id: ${code}`,
+        result: {},
+      });
+    }
+    //const { location } = objectMin(stockAvailable, 'qty');
+
+    res.status(201).json({
+      // '/123456'
+      ok: true,
+      msg: 'Product location got by code',
+      result: stockAvailable,
     });
   } catch (error) {
     msgError(res, error);
@@ -325,6 +344,7 @@ module.exports = {
   getProductById,
   getProductsByCodeRegex,
   getProductByCode,
+  getProductsStock,
   updateProduct,
   updateQtyProduct,
   msgError,
