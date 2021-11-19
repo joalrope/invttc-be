@@ -40,12 +40,19 @@ const Product = require('../models/Product');
  */
 const getProducts = async (req = request, res = response) => {
   try {
-    const products = await Product.find();
+    const len = await Product.count({});
+    const result = await Product.find(
+      {},
+      { _id: 0, code: 1, title: 1, details: 1, replacement: 1 }
+    ).sort('code');
+    /*     .limit(50)
+      .skip(1);
+    console.log(len, result); */
 
     res.status(200).json({
       ok: true,
       msg: 'Get products',
-      result: products,
+      result: { len, result },
     });
   } catch (error) {
     msgError(req, error);
@@ -171,7 +178,10 @@ const updateProduct = async (req = request, res = response) => {
 const updateQtyProduct = async (req = request, res = response) => {
   try {
     const { code, trademark, location, qty } = req.body;
-    const curProduct = await Product.findOne({ code });
+    const curProduct = await Product.findOne({
+      code,
+      'details.trademark': trademark,
+    });
 
     if (!curProduct) {
       return res.status(404).json({
@@ -302,27 +312,37 @@ const getProductsByCodeRegex = async (req = request, res = response) => {
 };
 
 const getProductsStock = async (req = request, res = response) => {
-  const code = req.params.code.toUpperCase();
+  const { code, trademark } = req.params;
 
   try {
-    const stockAvailable = await Product.find({ code }).distinct(
-      'details.stock.location'
-    );
+    let stock;
+    let details;
+    let ok;
+    let msg;
 
-    if (stockAvailable.length < 1) {
-      return res.status(404).json({
-        ok: false,
-        msg: `There is no product with id: ${code}`,
-        result: {},
-      });
-    }
-    //const { location } = objectMin(stockAvailable, 'qty');
+    stock = await Product.find(
+      {
+        code,
+        'details.trademark': trademark,
+      },
+      { details: 1 }
+    ).then(([product]) => {
+      if (product) {
+        ({ details } = product);
+        const [detail] = details.filter((item) => item.trademark === trademark);
+        ok = true;
+        msg = 'Product location got by code';
+        return detail.stock;
+      }
+      ok = false;
+      msg = `There is not product with code ${code}`;
+      stock = [];
+    });
 
     res.status(201).json({
-      // '/123456'
-      ok: true,
-      msg: 'Product location got by code',
-      result: stockAvailable,
+      ok: ok,
+      msg: msg,
+      result: stock,
     });
   } catch (error) {
     msgError(res, error);

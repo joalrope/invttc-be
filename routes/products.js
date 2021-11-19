@@ -23,9 +23,6 @@ const { createReg, updateReg, deleteReg } = require('../helper/roles');
 //Obtener un Productos cuya expresion regular coincida con Code
 router.get('/code/:code', getProductByCode);
 
-// Obtener la locacion con menor cantidad de un Producto mediante el código
-router.get('/location/:code', getProductsStock);
-
 //Todas las rutas deben pasar por la Validacion del Token
 router.use(jwtValidator);
 
@@ -58,5 +55,8 @@ router.get('/regex/:code', getProductsByCodeRegex);
 
 // Actualizar la cantidad de un Producto mediante Id
 router.put('/qty/:id', updateQtyProduct);
+
+// Obtener la locacion con menor cantidad de un Producto mediante el código
+router.get('/location/code/:code/trademark/:trademark', getProductsStock);
 
 module.exports = router;

@@ -2,8 +2,7 @@ const { request, response } = require('express');
 const Sale = require('../models/Sale');
 const { msgError } = require('./products');
 
-const getSales = async (req = request, res = response) => {
-  console.log(req);
+const getSales = async (_, res = response) => {
   try {
     const sales = await Sale.find();
 
