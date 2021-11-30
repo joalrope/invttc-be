@@ -213,17 +213,18 @@ const updateQtyProduct = async (req = request, res = response) => {
 };
 
 const deleteProduct = async (req = request, res = response) => {
+  const { id } = req.params;
   try {
-    const curProduct = await Product.findById(req.params.id);
+    const curProduct = await Product.findById(id);
 
     if (!curProduct) {
       return res.status(404).json({
         ok: false,
-        msg: `There is no product with id: ${req.params.id}`,
+        msg: `There is no product with id: ${id}`,
       });
     }
 
-    await Product.findByIdAndDelete(req.params.id);
+    await Product.findByIdAndDelete(id);
 
     res.status(201).json({
       // '/123456'
