@@ -29,6 +29,9 @@ router.use(jwtValidator);
 //Obtener productos
 router.get('/', getProducts);
 
+//Obtener pagina de productos
+router.get('/page/:page/size/:size', getProducts);
+
 //Crear un nuevo producto
 router.post(
   '/',

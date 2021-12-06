@@ -4,7 +4,7 @@ const { msgError } = require('./products');
 
 const getSales = async (_, res = response) => {
   try {
-    const sales = await Sale.find();
+    const sales = await Sale.find().sort({ invoiceNumber: -1 });
 
     res.status(200).json({
       ok: true,

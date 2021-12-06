@@ -39,15 +39,18 @@ const Product = require('../models/Product');
  * Controller that gets the data for all inventory products.
  */
 const getProducts = async (req = request, res = response) => {
+  const { page, size } = req.params;
+  const curPage = Number(page);
+  const curSize = Number(size);
   try {
     const len = await Product.count({});
     const result = await Product.find(
       {},
-      { _id: 0, code: 1, title: 1, details: 1, replacement: 1 }
-    ).sort('code');
-    /*     .limit(50)
-      .skip(1);
-    console.log(len, result); */
+      { _id: 0, key: 1, code: 1, title: 1, details: 1, replacement: 1 }
+    )
+      .sort('code')
+      .limit(curSize)
+      .skip((curPage - 1) * curSize);
 
     res.status(200).json({
       ok: true,
