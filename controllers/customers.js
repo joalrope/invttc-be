@@ -68,6 +68,32 @@ const getCustomerByCode = async (req = request, res = response) => {
   const code = req.params.code.toUpperCase();
 
   try {
+    const curCustomer = await Customer.find({ code });
+
+    if (curCustomer.length < 1) {
+      return res.status(404).json({
+        ok: false,
+        msg: `There is no customer with id: ${code}`,
+        result: {},
+      });
+    }
+
+    if (curCustomer[0] === 'undefined') curCustomer[0] = {};
+
+    res.status(201).json({
+      // '/123456'
+      ok: true,
+      msg: 'Customer got by code',
+      result: curCustomer[0],
+    });
+  } catch (error) {
+    msgError(res, error);
+  }
+};
+const getCustomersByCodeRegex = async (req = request, res = response) => {
+  const code = req.params.code.toUpperCase();
+
+  try {
     let foundCustomers = await Customer.find(
       { code: { $regex: `^${code}` } },
       { _id: 1, code: 1, name: 1 }
@@ -127,14 +153,15 @@ const deleteCustomer = async (req = request, res = response) => {
     if (!foundCustomer) {
       return res.status(404).json({
         ok: false,
-        msg: `There is no customer with id: ${req.params.id}`,
+        msg: `No èxiste un Cliente con los datos suministrados`,
       });
     }
 
     await Customer.findByIdAndDelete(req.params.id);
     res.status(200).json({
       ok: true,
-      msg: `customer ${foundCustomer.name} removed`,
+      msg: `El cliente ${foundCustomer.name} ha sido eliminado con éxito`,
+      result: foundCustomer.name,
     });
   } catch (error) {
     msgError(res, error);
@@ -146,6 +173,7 @@ module.exports = {
   getCustomers,
   getCustomerById,
   getCustomerByCode,
+  getCustomersByCodeRegex,
   updateCustomer,
   deleteCustomer,
 };

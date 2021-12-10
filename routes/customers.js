@@ -5,6 +5,7 @@ const { jwtValidator } = require('../middlewares/jwt-validator');
 const {
   getCustomers,
   getCustomerByCode,
+  getCustomersByCodeRegex,
   getCustomerById,
   createCustomer,
   updateCustomer,
@@ -46,5 +47,8 @@ router.delete('/:id', allowAccessTo(deleteReg), deleteCustomer);
 
 //Obtener un Cliente mediante RIF (code) ó Nombre
 router.get('/code/:code', getCustomerByCode);
+
+//Obtener los clientes cuyo código coincida con la expresion regular
+router.get('/regex/:code', getCustomersByCodeRegex);
 
 module.exports = router;

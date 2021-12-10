@@ -71,7 +71,7 @@ const getProducts = async (req = request, res = response) => {
  * Path: "/"
  * Method: POST
  * Controller to create a new product whose code does not exist,
- * if the code exists but not the trademark is adds the new info in that code,
+ * if the code exists but not the trademark then adds the new info in that code,
  * if the trademark exists, a new loc_qty is added.
  */
 const createProduct = async (req = request, res = response) => {
@@ -168,7 +168,6 @@ const updateProduct = async (req = request, res = response) => {
     );
 
     res.status(200).json({
-      // '/123456'
       ok: true,
       msg: 'Updated product',
       result: updatedProduct,
@@ -205,7 +204,6 @@ const updateQtyProduct = async (req = request, res = response) => {
     );
 
     res.status(201).json({
-      // '/123456'
       ok: true,
       msg: 'Updated product quantity',
       result: updatedQty,
