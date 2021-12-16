@@ -46,7 +46,7 @@ const getProducts = async (req = request, res = response) => {
     const len = await Product.count({});
     const result = await Product.find(
       {},
-      { _id: 0, key: 1, code: 1, title: 1, details: 1, replacement: 1 }
+      { id: 1, key: 1, code: 1, title: 1, details: 1, replacement: 1 }
     )
       .sort('code')
       .limit(curSize)
