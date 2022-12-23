@@ -1,7 +1,5 @@
 .DS_Store
 node_modules/
-.env
 .vscode
-mongoDB-Data.txt
-.eslintrc.json
-.prettierrc
+
+
